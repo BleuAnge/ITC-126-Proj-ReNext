@@ -1,0 +1,100 @@
+:root {
+    --card-color: rgb(255, 255, 255);
+}
+
+#contact_screen {
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    overflow: hidden;
+}
+
+#cards {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 25px;
+    max-width: 922px;
+    width: calc(100% - 20px);
+}
+
+.card_body {
+    aspect-ratio: 1/1.5;
+    border: .75vmin solid var(--card-color);
+    border-radius: 10%;
+    cursor: pointer;
+    position: relative;
+    width: 40vmin;
+    overflow: hidden;
+}
+
+.card_body:before {
+    opacity: 0.6;
+    background: linear-gradient(
+        130deg,
+        transparent 0% 33%,
+        #5e5977 66%,
+        #8c6ebe 83.5%,
+        #e5813b 100%
+    );
+    background-position: 0% 0%;
+    background-size: 300% 300%;
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    transition: background-position 350ms ease;
+    z-index: -1;
+}
+
+.card_body:hover:before {
+    background-position: 100% 100%;
+    transform: scale(1.08, 1.03);
+}
+
+.card_content {
+    background: radial-gradient(
+        rgba(255, 255, 255, 0.2) 8%,
+        transparent 8%
+    );
+    background-position: 0% 0%;
+    background-size: 5vmin 5vmin;
+    padding: 5vmin;
+    height: 100%;
+    width:  100%;
+    transition: background-position 350ms ease;
+}
+
+.card_body:hover > .card_content {
+    background-position: -25% 0%;
+}
+
+.card_title, .card_subtitle {
+    color: white;
+    font-family: "Bahnscrift";
+    font-weight: 100;
+    margin: 0px;
+    padding-top: 25%;
+}
+
+.card_title {
+    font-size: 6vmin;
+}
+
+.card_subtitle {
+    font-size: 3vmin;
+    margin: 2vmin;
+    display: inline-block;
+    position: relative;
+    transform: translate(20%, 80%);
+    opacity: 0;
+    transition: opacity 400ms ease, transform 400ms ease;
+}
+
+.card_content:hover > .card_subtitle {
+    opacity: 1;
+    transform: translateY(0%);
+}

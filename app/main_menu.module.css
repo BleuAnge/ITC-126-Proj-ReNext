@@ -3,7 +3,7 @@ body {
     margin: 0px;
 }
 
-#menu {
+.menu {
     position: absolute;
     width: 100dvw;
     height: 100dvh;
@@ -23,16 +23,16 @@ body {
     transition: opacity 400ms ease;
 }
 
-#menu_items:hover > .menu_item {
+.menu_items:hover > .menu_item {
     opacity: 0.3;
 }
 
-#menu_items:hover > .menu_item:hover {
+.menu_items:hover > .menu_item:hover {
     color: blue;
     opacity: 1;
 }
 
-#menu_items {
+.menu_items {
     margin-left: clamp(4rem, 20vw, 48rem);
     position: relative;
     z-index: 2;
@@ -59,25 +59,9 @@ body {
     background-position 200ms ease;
 }
 
-#menu_items:hover ~ #bg_pattern {
+.menu_items:hover ~ #bg_pattern {
     background-size: 11vmin 11vmin;
     opacity: 0.5;
-}
-
-#menu[data-active-index="0"] > #bg_pattern {
-    background-position: 0% -25%;
-}
-
-#menu[data-active-index="1"] > #bg_pattern {
-    background-position: 0% -50%;
-}
-
-#menu[data-active-index="2"] > #bg_pattern {
-    background-position: 0% -75%;
-}
-
-#menu[data-active-index="3"] > #bg_pattern {
-    background-position: 0% -100%;
 }
 
 #bg_image {
@@ -100,7 +84,7 @@ body {
     background-position 800ms ease;  
 }
 
-#menu_items:hover ~ #bg_image {
+.menu_items:hover ~ #bg_image {
     background-size: 20vmax;
     opacity: 1;
 }

@@ -1,0 +1,72 @@
+:root {
+    --bg-color: rgb(20, 20, 20);
+    --font-color: white;
+}
+
+.modal_main {
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    overflow: hidden;
+}
+
+.modal {
+    max-width: 922px;
+    width: calc(100% - 20px);
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_body, .modal_header, .modal_footer {
+    display: flex;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    margin: 0px;
+    padding: 10px;
+    border: .5vmin solid #8c6ebe;
+    font: 3vmin 'bahnschrift';
+}
+
+.modal_close_button, .modal_save_button {
+    border-radius: 20%;
+    border: .3vmin solid #8c6ebe;
+    padding-inline: 5% 5%;
+    padding-block: 1% 1%;
+}
+
+.modal_text {
+    color: white;
+}
+
+.modal_submit_options {
+    background-color: transparent;
+    margin: 0px;
+    padding: 10px;
+}
+
+.textbox {
+    resize: none;
+}
+
+#feedback_image {
+    height: 100%;
+    width: 50%;
+    
+    background: url("../assets/feedback.png") no-repeat center center;
+
+    position: absolute;
+    left: 50%;
+    top: 18%;
+    z-index: 1;
+
+    background-position: center;
+    background-size: 15vmax;
+}

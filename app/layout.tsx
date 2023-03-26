@@ -15,6 +15,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
+        <div id='root'></div>
       </body>
     </html>
   );
