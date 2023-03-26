@@ -1,19 +1,15 @@
 import styles from './navbar.module.css';
-import { Nav_Items } from './nav_items';
-import NavDropList from './nav_dropdown';
+import { navItems } from './nav_list';
+import NavItem from './nav_item';
 
-export default function Navbar() {
+export default function Navbar(){
     return (
-        <header>
-            <div className='nav_area'>
-                <nav>
-                    <ul className={styles.menu}>
-                        { Nav_Items.map((menu, index) => {
-                            return <NavDropList items={menu} key={index}/>;
-                        })}
-                    </ul>
-                </nav>
-            </div>
-        </header>
+        <nav className={styles.navbar}>
+            <ul className={styles.navbar_nav}>
+                {navItems.map((content, index) => {
+                    return <NavItem content={content}/>
+                })}
+            </ul>
+        </nav>
     )
 }

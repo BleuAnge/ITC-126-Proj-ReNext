@@ -12,14 +12,6 @@ body {
     overflow: hidden;
 }
 
-#menu_items:hover > .menu-item {
-    opacity: 0.3;
-}
-
-#menu_items:hover > .menu-item:hover {
-    opacity: 1;
-}
-
 .menu_item {
     color: white;
     font-size: clamp(3rem, 8vh, 8rem);
@@ -29,6 +21,15 @@ body {
     text-decoration: none;
     padding: clamp(0.25rem, 0.5vw, 1rem) 0rem;
     transition: opacity 400ms ease;
+}
+
+#menu_items:hover > .menu_item {
+    opacity: 0.3;
+}
+
+#menu_items:hover > .menu_item:hover {
+    color: blue;
+    opacity: 1;
 }
 
 #menu_items {

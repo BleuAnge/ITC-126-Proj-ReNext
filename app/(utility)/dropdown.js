@@ -1,14 +1,11 @@
 import styles from '../navbar/navbar.module.css';
 
-export default function DropDown({ submenus, dropdown }) {
+export default function DropDown({submenus}) {
     return (
-        <ul className={dropdown ? styles.dropdown.show : styles.dropdown}>
-            {
-                submenus.map((submenu, index) => (
-                    <li key={index} className={styles.nav_item}>
-                        <a href={submenu.url}>{submenu.title}</a>
-                    </li>
+        <div className={styles.dropdown}>
+            {submenus.map((submenu) => (
+                <a href={submenu.url} className={styles.menu_item}>{submenu.title}</a>
             ))}
-        </ul>
+        </div>
     )
 }

@@ -1,11 +1,11 @@
-export const Nav_Items = [
+export const navItems = [
     {
         title: 'Go Back',
         url: './',
     },
     {
         title: 'Accounts',
-        url: '/Accounts',
+        url: '#',
         subMenu: [
             {
                 title: 'Admininstrator',
@@ -37,4 +37,4 @@ export const Nav_Items = [
             },
         ],
     },
-]
+];
