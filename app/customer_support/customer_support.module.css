@@ -3,10 +3,13 @@
 }
 
 #contact_screen {
+    width: 100vw;
+    height: 100vh;
     background-color: rgb(20, 20, 20);
+    position: absolute;
+    left: 20%;
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 90vh;
     overflow: hidden;
 }

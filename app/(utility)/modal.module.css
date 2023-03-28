@@ -3,70 +3,80 @@
     --font-color: white;
 }
 
-.modal_main {
-    background-color: rgb(20, 20, 20);
+.modal_background {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 90vh;
-    overflow: hidden;
+    align-items: center;
 }
 
-.modal {
-    max-width: 922px;
-    width: calc(100% - 20px);
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    padding: 0;
-    margin: 0;
+.modal_container {
+    width: 500px;
+    height: 500px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
+    padding: 25px;
+    margin-bottom: 100px;
 }
 
-.modal_body, .modal_header, .modal_footer {
+.modal_container .modal_header {
     display: flex;
-    overflow: hidden;
-    background-color: var(--bg-color);
-    color: var(--font-color);
-    margin: 0px;
-    padding: 10px;
-    border: .5vmin solid #8c6ebe;
-    font: 3vmin 'bahnschrift';
+    flex-wrap: nowrap;
+    text-align: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 170px;
+    border: 1px solid black;
 }
 
-.modal_close_button, .modal_save_button {
-    border-radius: 20%;
-    border: .3vmin solid #8c6ebe;
-    padding-inline: 5% 5%;
-    padding-block: 1% 1%;
+.modal_container .modal_header h1 {
+    margin: 5px;
+    align-items: center;
 }
 
-.modal_text {
+.modal_container .modal_header button {
+    margin: 10px;
+    max-width: 25px;
+    max-height: 25px;
+    align-items: center;
+}
+
+.modal_container .modal_body {
+    flex: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.modal_container .modal_footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.modal_container .modal_footer button {
+    width: 150px;
+    height: 45px;
+    margin: 10px;
+    border: none;
+    background-color: cornflowerblue;
     color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
 }
 
-.modal_submit_options {
-    background-color: transparent;
-    margin: 0px;
-    padding: 10px;
-}
-
-.textbox {
-    resize: none;
-}
-
-#feedback_image {
-    height: 100%;
-    width: 50%;
-    
-    background: url("../assets/feedback.png") no-repeat center center;
-
-    position: absolute;
-    left: 50%;
-    top: 18%;
-    z-index: 1;
-
-    background-position: center;
-    background-size: 15vmax;
+#cancel_button {
+    background-color: crimson;
 }

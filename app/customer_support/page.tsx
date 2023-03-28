@@ -3,6 +3,7 @@
 import styles from './customer_support.module.css';
 import { useState } from "react";
 import modalCSS from '../(utility)/modal.module.css';
+import Feedback_Modal from '../(modals)/feedback';
 
 export default function Customer_Support() {
     const [showFeedbackModal, setFeedbackShow] = useState(false);
@@ -38,61 +39,9 @@ export default function Customer_Support() {
 
             {
                 showFeedbackModal ? (
-                    <div className={modalCSS.modal_main}>
-                        <div className={modalCSS.modal}>
-                            <div className={modalCSS.modal_header}>
-                                <div className={modalCSS.modal_text}>Feedback Form</div>
-                            </div>
-                            <div className={modalCSS.modal_body}><h1>Test</h1></div>
-                            <div className={modalCSS.modal_footer}>
-                                <button className={modalCSS.modal_close_button} onClick={() => setFeedbackShow(false)}>Close</button>
-                                <button className={modalCSS.modal_save_button} onClick={() => setFeedbackShow(false)}>Save</button>
-                            </div>
-                        </div>
-                    </div>
+                    <Feedback_Modal setFeedbackShow={setFeedbackShow} />
                 ) : (
-                    <>
-                    </>
-                )
-            }
-
-            {
-                showReportModal ? (
-                    <div className={modalCSS.modal_main}>
-                        <div className={modalCSS.modal}>
-                            <div className={modalCSS.modal_header}>
-                                <div className={modalCSS.modal_text}>Report Form</div>
-                            </div>
-                            <div className={modalCSS.modal_body}><h1>Test</h1></div>
-                            <div className={modalCSS.modal_footer}>
-                                <button className={modalCSS.modal_close_button} onClick={() => setReportShow(false)}>Close</button>
-                                <button className={modalCSS.modal_save_button} onClick={() => setReportShow(false)}>Save</button>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <>
-                    </>
-                )
-            }
-
-            {
-                showApplicationModal ? (
-                    <div className={modalCSS.modal_main}>
-                        <div className={modalCSS.modal}>
-                            <div className={modalCSS.modal_header}>
-                                <div className={modalCSS.modal_text}>Application Form</div>
-                            </div>
-                            <div className={modalCSS.modal_body}><h1>Test</h1></div>
-                            <div className={modalCSS.modal_footer}>
-                                <button className={modalCSS.modal_close_button} onClick={() => setApplicationShow(false)}>Close</button>
-                                <button className={modalCSS.modal_save_button} onClick={() => setApplicationShow(false)}>Save</button>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <>
-                    </>
+                    null
                 )
             }
         </>
