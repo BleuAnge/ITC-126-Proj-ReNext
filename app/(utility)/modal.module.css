@@ -50,6 +50,7 @@
 .modal_container .modal_body {
     flex: 50%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     font-size: 1.7rem;

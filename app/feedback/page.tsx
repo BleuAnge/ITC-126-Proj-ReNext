@@ -22,7 +22,6 @@ export default async function FeedbackAPI() {
                     })
                 }
             </div>
-            <CreateFeedback />
         </div>
     )
 }
