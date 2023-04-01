@@ -2,8 +2,8 @@
 
 import './customer_support.css';
 import { useState } from "react";
-import modalCSS from '../(utility)/modal.module.css';
 import Feedback_Modal from '../(modals)/feedback';
+import Report_Modal from '../(modals)/report';
 
 export default function Customer_Support() {
     const [showFeedbackModal, setFeedbackShow] = useState(false);
@@ -40,6 +40,14 @@ export default function Customer_Support() {
             {
                 showFeedbackModal ? (
                     <Feedback_Modal setFeedbackShow={setFeedbackShow} />
+                ) : (
+                    null
+                )
+            }
+
+            {
+                showReportModal ? (
+                    <Report_Modal setReportShow={setReportShow} />
                 ) : (
                     null
                 )

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import React from "react";
-import styles from "../(utility)/modal.module.css";
+import "../(utility)/modal.css";
 
 function Feedback_Modal({ setFeedbackShow }) {
     const [feedback_rate, setFeedbackRate] = useState(0)
@@ -30,13 +30,13 @@ function Feedback_Modal({ setFeedbackShow }) {
     }
 
     return (
-        <div className={styles.modal_background}>
-            <div className={styles.modal_container}>
-                <div className={styles.modal_header}>
+        <div className="modal_background">
+            <div className="modal_container">
+                <div className="modal_header">
                     <h1>Feedback Ticket</h1>
                     <button onClick={() => setFeedbackShow(false)}> X </button>
                 </div>
-                <div className={styles.modal_body}>
+                <div className="modal_body">
                     <label for="feedbackrate">Feedback Rate: </label><br></br>
                     <input 
                         className="feedbackrate"
@@ -50,8 +50,8 @@ function Feedback_Modal({ setFeedbackShow }) {
                         onChange={(e) => setFeedbackNote(e.target.value)}
                     />
                 </div>
-                <div className={styles.modal_footer}>
-                    <button id={styles.cancel_button} onClick={() => setFeedbackShow(false)}>Cancel</button>
+                <div className="modal_footer">
+                    <button id="cancel_button" onClick={() => setFeedbackShow(false)}>Cancel</button>
                     <button onClick={create}>Save</button>
                 </div>
             </div>
