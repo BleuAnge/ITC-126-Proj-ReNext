@@ -10,6 +10,7 @@ function ReportModal({ setReportShow }) {
     const [report_type, setReportType] = useState(' ');
     const [order_id, setOrderID] = useState(' ');
     const [report_note, setReportNote] = useState(' ');
+    const report_isNew = true;
 
     const router = useRouter();
 
@@ -24,6 +25,7 @@ function ReportModal({ setReportShow }) {
                 order_id,
                 report_note,
                 report_type,
+                report_isNew,
             }),
         });
 
@@ -60,7 +62,7 @@ function ReportModal({ setReportShow }) {
                         <option value="food_safety">Food Safety</option>
                         <option value="delivery_issue">Delivery Issue</option>
                         <option value="service_issue">Service Issue</option>    
-                    </select><br></br>
+                    </select><br></br><br></br>
                     <label for="orderID">Order ID: </label><br></br>
                     <input 
                         className="orderID"

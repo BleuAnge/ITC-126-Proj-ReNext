@@ -1,6 +1,5 @@
 import Link from "next/link";
 import styles from './feedback.module.css';
-import CreateFeedback from "./createFeedback";
 
 async function getFeedbackTable() {
     const res = await fetch('http://127.0.0.1:8090/api/collections/feedback_table/records?page=1&perPage=30',

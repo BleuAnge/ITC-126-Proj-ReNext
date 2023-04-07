@@ -9,7 +9,7 @@ export const navItems = [
         subMenu: [
             {
                 title: 'Admininstrator',
-                url: 'AdminMenu',
+                url: 'admin_menu',
             },
             {
                 title: 'IT 1',

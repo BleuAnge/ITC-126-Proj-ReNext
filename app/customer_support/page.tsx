@@ -4,6 +4,7 @@ import './customer_support.css';
 import { useState } from "react";
 import Feedback_Modal from '../(modals)/feedback';
 import Report_Modal from '../(modals)/report';
+import Application_Modal from '../(modals)/application';
 
 export default function Customer_Support() {
     const [showFeedbackModal, setFeedbackShow] = useState(false);
@@ -48,6 +49,14 @@ export default function Customer_Support() {
             {
                 showReportModal ? (
                     <Report_Modal setReportShow={setReportShow} />
+                ) : (
+                    null
+                )
+            }
+
+            {
+                showApplicationModal ? (
+                    <Application_Modal setApplicationShow={setApplicationShow} />
                 ) : (
                     null
                 )
