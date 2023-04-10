@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import './admin_page.css';
 
@@ -23,18 +22,18 @@ export default function AdminPage() {
                     <div className='admin-main-body'>
                         <div className='admin-body-divider'>
                             <div className='admin-ticket-container'>
-                                <h1>new ticket here</h1>
+                                
                             </div>
                             <div className='admin-menu-container'>
-                                <div id='admin-feedback-section' className='admin-section-card' onClick={ShowFeedbackClick}>
+                                <button id='admin-feedback-section' className='admin-section-card' onClick={ShowFeedbackClick}>
                                     <h1 className='admin-menu-link'>Customer Feedback Tickets</h1>
-                                </div>
-                                <div id='admin-report-section' className='admin-section-card' onClick={ShowReportClick}>
+                                </button>
+                                <button id='admin-report-section' className='admin-section-card' onClick={ShowReportClick}>
                                     <h1 className='admin-menu-link'>Customer Report Tickets</h1>
-                                </div>
-                                <div id='admin-apply-section' className='admin-section-card' onClick={ShowApplyClick}>
+                                </button>
+                                <button id='admin-apply-section' className='admin-section-card' onClick={ShowApplyClick}>
                                     <h1 className='admin-menu-link'>Application Tickets</h1>
-                                </div>
+                                </button>
                             </div>
                         </div>
                         <div className='admin-image-section'>
@@ -47,7 +46,8 @@ export default function AdminPage() {
             {
                 showFeedbackMenu ?
                     <div>
-                        <Link className='admin-menu-link' onClick={ReturnToAdminMenu}>Customer Feedback Tickets</Link>
+                        <button onClick={ReturnToAdminMenu}>Back to Menu</button>
+                        <h1>Test</h1>
                     </div>
                 :null
             }
@@ -55,7 +55,8 @@ export default function AdminPage() {
             {
                 showReportMenu ?
                     <div>
-                        <Link className='admin-menu-link' onClick={ReturnToAdminMenu}>Customer Feedback Tickets</Link>
+                        <button onClick={ReturnToAdminMenu}>Back to Menu</button>
+                        <h1>Test 2</h1>
                     </div>
                 :null
             }
@@ -63,10 +64,12 @@ export default function AdminPage() {
             {
                 showApplyMenu ?
                     <div>
-                        <Link className='admin-menu-link' onClick={ReturnToAdminMenu}>Customer Feedback Tickets</Link>
+                        <button onClick={ReturnToAdminMenu}>Back to Menu</button>
+                        <h1>Test 3</h1>
                     </div>
                 :null
             }
         </>     
     )
 }
+
