@@ -8,7 +8,7 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
             <div className='admin-body-divider'>
                 <div className='admin-ticket-container'>
                     {
-                        tickets?.map((ticket: { id: any; }) => { return <Feedback key={ticket.id} ticket={ticket}/>})
+                        tickets?.map((ticket: { id: any; }) => { return <Feedback key={ticket.id} ticket={ticket} />})
                     }
                 </div>
                 <div className='admin-menu-container'>
@@ -30,14 +30,38 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
     )
 }
 
+//shows new ticket on admin main menu
+//to be refactored
 function Feedback({ ticket }: any) {
-    const {id, feedback_rate, feedback_note, created} = ticket || {};
+    const {id, feedback_rate, feedback_note, feedback_isNew, created} = ticket || {};
+
+    const update = async () => {
+        const feedback_isNew = false;
+
+        await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+                feedback_isNew,
+            }),
+        })
+
+        window.location.reload();
+    }
 
     return (
-        <button className='admin-section-card'>
-            <h2>{feedback_rate}</h2>
-            <h5>{feedback_note}</h5>
-            <p>{created}</p>
-        </button>
+        <>
+            {
+                feedback_isNew ? 
+                    <button className='admin-section-card' onClick={update}>
+                        <h2>{feedback_rate}</h2>
+                        <p>{feedback_note}</p>
+                        <p>{created}</p>
+                    </button> 
+                :null
+            }
+        </>     
     )
 }
