@@ -1,6 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import MainMenu from './(admin_page)/main_menu';
+import FeedbackTable from './(admin_page)/feedback_table';
+import ReportTable from './(admin_page)/report_table';
+import ApplicationTable from './(admin_page)/application_table';
 import './admin_page.css';
 
 export default function AdminPage() {
@@ -9,64 +13,56 @@ export default function AdminPage() {
     const [showReportMenu, setReportMenu] = useState(false);
     const [showApplyMenu, setApplyMenu] = useState(false);
 
-    const ReturnToAdminMenu = () => {setAdminMenu(true); setFeedbackMenu(false); setReportMenu(false); setApplyMenu(false)}
+    const [tickets, setTickets] = useState();
 
-    const ShowFeedbackClick = () => {setAdminMenu(false); setFeedbackMenu(true)}
-    const ShowReportClick = () => {setAdminMenu(false); setReportMenu(true)}
-    const ShowApplyClick = () => {setAdminMenu(false); setApplyMenu(true)}
+    useEffect(() => {
+        async function getFeedbackTable() {
+            const res = await fetch('http://127.0.0.1:8090/api/collections/feedback_table/records?page=1&perPage=30',
+            {cache:'no-store'});
+            const data = await res.json();
+            setTickets(data?.items);
+            return data?.items as any[];
+        }
+
+        getFeedbackTable(); 
+    },[])
+
+    console.log(tickets);
     
     return (
         <>
             {
                 showAdminMenu ?
-                    <div className='admin-main-body'>
-                        <div className='admin-body-divider'>
-                            <div className='admin-ticket-container'>
-                                
-                            </div>
-                            <div className='admin-menu-container'>
-                                <button id='admin-feedback-section' className='admin-section-card' onClick={ShowFeedbackClick}>
-                                    <h1 className='admin-menu-link'>Customer Feedback Tickets</h1>
-                                </button>
-                                <button id='admin-report-section' className='admin-section-card' onClick={ShowReportClick}>
-                                    <h1 className='admin-menu-link'>Customer Report Tickets</h1>
-                                </button>
-                                <button id='admin-apply-section' className='admin-section-card' onClick={ShowApplyClick}>
-                                    <h1 className='admin-menu-link'>Application Tickets</h1>
-                                </button>
-                            </div>
-                        </div>
-                        <div className='admin-image-section'>
-                            <h1>image here</h1>
-                        </div>
-                    </div>
+                    <MainMenu 
+                        setAdminMenu={setAdminMenu} 
+                        setFeedbackMenu={setFeedbackMenu} 
+                        setReportMenu={setReportMenu} 
+                        setApplyMenu={setApplyMenu}
+                        tickets={tickets}/>
                 : null
             }
 
             {
                 showFeedbackMenu ?
-                    <div>
-                        <button onClick={ReturnToAdminMenu}>Back to Menu</button>
-                        <h1>Test</h1>
-                    </div>
+                    <FeedbackTable 
+                        setAdminMenu={setAdminMenu}
+                        setFeedbackMenu={setFeedbackMenu}/>
                 :null
             }
 
             {
                 showReportMenu ?
-                    <div>
-                        <button onClick={ReturnToAdminMenu}>Back to Menu</button>
-                        <h1>Test 2</h1>
-                    </div>
+                    <ReportTable
+                        setAdminMenu={setAdminMenu}
+                        setReportMenu={setReportMenu}/>
                 :null
             }
 
             {
                 showApplyMenu ?
-                    <div>
-                        <button onClick={ReturnToAdminMenu}>Back to Menu</button>
-                        <h1>Test 3</h1>
-                    </div>
+                    <ApplicationTable
+                        setAdminMenu={setAdminMenu}
+                        setApplyMenu={setApplyMenu}/>
                 :null
             }
         </>     
