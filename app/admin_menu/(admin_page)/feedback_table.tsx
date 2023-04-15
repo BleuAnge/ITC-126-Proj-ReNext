@@ -31,6 +31,9 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                         <th>Feedback Rate</th>
                         <th>Feedback Note</th>
                         <th>Date</th>
+                        <th>Feedback Status</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 {
@@ -43,7 +46,7 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
 }
 
 function FeedbackList({ feedback }: any) {
-    const {id, feedback_rate, feedback_note, feedback_isNew, created} = feedback || {};
+    const {id, feedback_rate, feedback_note, feedback_isNew, feedback_status, created} = feedback || {};
 
     return (
         <>
@@ -52,6 +55,9 @@ function FeedbackList({ feedback }: any) {
                         <td>{feedback_rate}</td>
                         <td><button>{feedback_note}</button></td>
                         <td>{created}</td>
+                        <td>{feedback_status}</td>
+                        <td><button>Update</button></td>
+                        <td><button>Delete</button></td>
                     </tr>
             </tbody>
         </>     

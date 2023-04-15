@@ -32,6 +32,9 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                         <th>Report Note</th>
                         <th>Report Type</th>
                         <th>Date Sent</th>
+                        <th>Report Status</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 {
@@ -44,7 +47,7 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
 }
 
 function ReportList({ report }: any) {
-    const {report_sender, report_note, report_type, created} = report || {};
+    const {report_sender, report_note, report_type, report_status, created} = report || {};
 
     return (
         <>
@@ -54,6 +57,9 @@ function ReportList({ report }: any) {
                         <td>{report_note}</td>
                         <td>{report_type}</td>
                         <td>{created}</td>
+                        <td>{report_status}</td>
+                        <td><button>Update</button></td>
+                        <td><button>Delete</button></td>
                     </tr>
             </tbody>
         </>     
