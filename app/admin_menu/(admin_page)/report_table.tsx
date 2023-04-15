@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../../(utility)/modal.css';
+import '../../(utility)/table.css';
 
 export default function ReportTable({setAdminMenu, setReportMenu}: any) {
     const [reports, setReport] = useState<any>()
@@ -22,10 +23,9 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
     },[])
 
     return (
-        <div>
-            <h1>Feedback Table</h1>
-            <button onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
-            <table>
+        <div className='main_div'>
+            <h1 className='table_title'>Report Table</h1>
+            <table className='table_container'>
                 <thead>
                     <tr>
                         <th>Sender</th>
@@ -39,9 +39,9 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                 </thead>
                 {
                     reports?.map((report: { id: any; }) => {return <ReportList report={report}/>})
-                }
-                
+                } 
             </table>
+            <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
         </div>
     )
 }
