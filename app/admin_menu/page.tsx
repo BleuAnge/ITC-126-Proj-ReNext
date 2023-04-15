@@ -26,8 +26,6 @@ export default function AdminPage() {
 
         getFeedbackTable(); 
     },[])
-
-    console.log(tickets);
     
     return (
         <>

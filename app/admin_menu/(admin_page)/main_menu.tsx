@@ -8,9 +8,12 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
             <div className='admin-body-divider'>
                 <div className='admin-ticket-container'>
                     {
-                        tickets?.map((ticket: { id: any; }) => { return <Feedback key={ticket.id} ticket={ticket} />})
+                        tickets?.map((ticket: { id: any; }) => { return <NewTicket key={ticket.id} ticket={ticket} />})
+                        //find a way to check if there are new tickets in database
                     }
                 </div>
+
+                {/* create a Table modal for each kind of tickets */}
                 <div className='admin-menu-container'>
                     <button id='admin-feedback-section' className='admin-section-card' onClick={ShowFeedbackClick}>
                         <h1 className='admin-menu-link'>Customer Feedback Tickets</h1>
@@ -23,6 +26,8 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
                     </button>
                 </div>
             </div>
+
+            {/*draw a admin inanis for this part*/}
             <div className='admin-image-section'>
                 <h1>image here</h1>
             </div>
@@ -32,7 +37,7 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
 
 //shows new ticket on admin main menu
 //to be refactored
-function Feedback({ ticket }: any) {
+function NewTicket({ ticket }: any) {
     const {id, feedback_rate, feedback_note, feedback_isNew, created} = ticket || {};
 
     const update = async () => {
