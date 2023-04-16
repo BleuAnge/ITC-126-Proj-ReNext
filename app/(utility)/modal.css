@@ -3,6 +3,10 @@
     --font-color: white;
 }
 
+textarea {
+    resize: none;
+}
+
 .modal_background {
     width: 100vw;
     height: 100vh;
@@ -80,3 +84,8 @@
 #cancel_button {
     background-color: crimson;
 }
+
+.exit_button {
+    color: black;
+}
+

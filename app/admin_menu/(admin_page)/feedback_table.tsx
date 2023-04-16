@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import FeedbackPage from './feedback_modal';
 import '../../(utility)/modal.css';
 import '../../(utility)/table.css';
 
@@ -39,7 +41,15 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                     </tr>
                 </thead>
                 {
-                    feedbacks?.map((feedback: { id: any; }) => {return <FeedbackList feedback={feedback}/>})
+                    feedbacks?.map((feedback: { id: any; }) => {return (
+                        <tbody>
+                            <tr>
+                                <FeedbackList feedback={feedback}/>
+                                <td><button>Update</button></td>
+                                <td><button>Delete</button></td> 
+                            </tr>
+                        </tbody>
+                    )})
                 }
             </table>
             <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
@@ -52,16 +62,10 @@ function FeedbackList({ feedback }: any) {
 
     return (
         <>
-            <tbody>
-                    <tr>
-                        <td><button>{feedback_note}</button></td>
-                        <td>{feedback_rate}</td>
-                        <td>{created}</td>
-                        <td>{feedback_status}</td>
-                        <td><button>Update</button></td>
-                        <td><button>Delete</button></td>
-                    </tr>
-            </tbody>
+            <td><button>{feedback_note}</button></td>
+            <td>{feedback_rate}</td>
+            <td>{created}</td>
+            <td>{feedback_status}</td>         
         </>     
     )
 }

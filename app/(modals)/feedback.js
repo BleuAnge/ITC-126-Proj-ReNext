@@ -5,7 +5,7 @@ import { useState } from "react";
 import React from "react";
 import "../(utility)/modal.css";
 
-function Feedback_Modal({ setFeedbackShow }) {
+function Feedback_Modal({ setFeedbackShow, isReadOnly }) {
     const [feedback_rate, setFeedbackRate] = useState(0)
     const [feedback_note, setFeedbackNote] = useState(' ')
     const feedback_isNew = true;
