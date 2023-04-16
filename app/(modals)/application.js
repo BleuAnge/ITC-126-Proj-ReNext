@@ -10,7 +10,7 @@ function Application_Modal({ setApplicationShow }) {
     const [last_name, setLastName] = useState(' ');
     const [email, setEmail] = useState(' ');
     const [job_position, setJobPosition] = useState(' ');
-    const application_isNew = true;
+    const application_status = "New";
 
     const router = useRouter();
 
@@ -25,7 +25,7 @@ function Application_Modal({ setApplicationShow }) {
                 last_name,
                 email,
                 job_position,
-                application_isNew,
+                application_status,
             }),
         });
 

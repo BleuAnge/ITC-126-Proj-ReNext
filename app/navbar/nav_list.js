@@ -21,11 +21,11 @@ export const navItems = [
             },
             {
                 title: 'KFP',
-                url: 'CompanyMenu',
+                url: 'enterprise_menu',
             },
             {
                 title: 'Ubersheep',
-                url: 'CompanyMenu',
+                url: 'enterprise_menu',
             },
             {
                 title: 'User 1',

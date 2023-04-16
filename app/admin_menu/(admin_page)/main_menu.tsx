@@ -38,10 +38,10 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
 //shows new ticket on admin main menu
 //to be refactored
 function NewTicket({ ticket }: any) {
-    const {id, feedback_rate, feedback_note, feedback_isNew, created} = ticket || {};
+    const {id, feedback_rate, feedback_note, feedback_status, created} = ticket || {};
 
     const update = async () => {
-        const feedback_isNew = false;
+        const feedback_status = "Seen";
 
         await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${id}`, {
             method: 'PATCH',
@@ -49,7 +49,7 @@ function NewTicket({ ticket }: any) {
                 'Content-Type':'application/json',
             },
             body: JSON.stringify({
-                feedback_isNew,
+                feedback_status,
             }),
         })
 
@@ -59,7 +59,7 @@ function NewTicket({ ticket }: any) {
     return (
         <>
             {
-                feedback_isNew ? 
+                feedback_status == "New" ? 
                     <button className='admin-section-card' onClick={update}>
                         <h2>{feedback_rate}</h2>
                         <p>{feedback_note}</p>

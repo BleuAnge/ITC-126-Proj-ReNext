@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react';
-import '../../(utility)/modal.css';
-import '../../(utility)/table.css';
+'use client';
 
-export default function ReportTable({setAdminMenu, setReportMenu}: any) {
+import { useState, useEffect } from "react"
+import '../(utility)/modal.css';
+import '../(utility)/table.css';
+
+export default function EnterprisePage(){
     const [reports, setReport] = useState<any>()
     const [showModal, setModalShow] = useState(false)
     const [reportID, setReportID] = useState()
-    
-    const ReturnToAdminMenu = () => {
-        setAdminMenu(true); 
-        setReportMenu(false);
-    }
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/report_table/records?page=1&perPage=30'
 
@@ -71,7 +68,6 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                         } 
                     </table>
                 </div>   
-                <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
             </div>
             {
                 showModal ?

@@ -8,7 +8,7 @@ import "../(utility)/modal.css";
 function Feedback_Modal({ setFeedbackShow }) {
     const [feedback_rate, setFeedbackRate] = useState(0)
     const [feedback_note, setFeedbackNote] = useState(' ')
-    const feedback_isNew = true;
+    const feedback_status = "New";
 
     const router = useRouter();
 
@@ -21,7 +21,7 @@ function Feedback_Modal({ setFeedbackShow }) {
             body: JSON.stringify({
                 feedback_rate,
                 feedback_note,
-                feedback_isNew,
+                feedback_status,
             }),
         });
 

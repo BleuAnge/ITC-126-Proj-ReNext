@@ -10,7 +10,7 @@ function ReportModal({ setReportShow }) {
     const [report_type, setReportType] = useState(' ');
     const [order_id, setOrderID] = useState(' ');
     const [report_note, setReportNote] = useState(' ');
-    const report_isNew = true;
+    const report_status = "New";
 
     const router = useRouter();
 
@@ -25,7 +25,7 @@ function ReportModal({ setReportShow }) {
                 order_id,
                 report_note,
                 report_type,
-                report_isNew,
+                report_status,
             }),
         });
 
