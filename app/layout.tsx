@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-head-element */
-import Link from 'next/link';
 import './globals.css';
 import Navbar from './navbar/page';
 

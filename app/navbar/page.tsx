@@ -4,6 +4,8 @@ import styles from './navbar.module.css';
 import { useEffect,useState } from 'react';
 import NavButton from './nav_button';
 import NavDropDown from './nav_dropdown';
+import { useGlobalState } from '../(utility)/save_state';
+
 
 export default function Navbar(){
     const [accounts, setAccounts] = useState<any>()
@@ -13,6 +15,8 @@ export default function Navbar(){
     const [currentUser, setCurrentUser] = useState()
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/account_table/records?page=1&perPage=30'
+    
+    const currentUserdata = {username: useGlobalState<any>("username"), usertype: useGlobalState<any>("usertype")}
 
     useEffect(() => {
         async function getAccountTable() {
@@ -29,7 +33,8 @@ export default function Navbar(){
     return (
         <nav className={styles.navbar}>
             <ul className={styles.navbar_nav} >
-                <h1 className={styles.current_user}>Current User: {currentUser}</h1>
+                <h1 className={styles.current_user}>Current User: { currentUserdata.username }</h1>
+                <h1 className={styles.current_usertype}>Current Usertype: { currentUserdata.usertype }</h1>
                 <NavButton content={content} />
                 <NavDropDown accounts={accounts} setCurrentUser={setCurrentUser} />
             </ul>

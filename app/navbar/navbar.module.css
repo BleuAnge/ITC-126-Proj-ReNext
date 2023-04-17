@@ -80,3 +80,9 @@ a {
     left: 1%;
     color: white;
 }
+
+.current_usertype {
+    position: absolute;
+    left: 30%;
+    color: white;
+}

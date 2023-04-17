@@ -1,5 +1,7 @@
 import styles from '../navbar/navbar.module.css';
 import Link from 'next/link';
+import { setGlobalState } from './save_state';
+
 export default function DropDown({submenus, setOpenDropDown, setCurrentUser}: any) {
 
     return (
@@ -25,7 +27,8 @@ function DropDownItem({account, setOpenDropDown, setCurrentUser} : any) {
     return ( 
         <Link href={pageUrl} className={styles.menu_item} onClick={() => {
             setOpenDropDown(false)
-            setCurrentUser(username)
+            setGlobalState("username", username)
+            setGlobalState("usertype", usertype)
             }}>
             <h4>{username}<br></br><small>{usertype}</small></h4>    
         </Link>
