@@ -1,14 +1,37 @@
+'use client';
+
 import styles from './navbar.module.css';
-import { navItems } from './nav_list';
-import NavItem from './nav_item';
+import { useEffect,useState } from 'react';
+import NavButton from './nav_button';
+import NavDropDown from './nav_dropdown';
 
 export default function Navbar(){
+    const [accounts, setAccounts] = useState<any>()
+    const [content, setContent] = useState({
+        title: 'Go Back',
+        url: './',})
+    const [currentUser, setCurrentUser] = useState()
+
+    const baseUrl = 'http://127.0.0.1:8090/api/collections/account_table/records?page=1&perPage=30'
+
+    useEffect(() => {
+        async function getAccountTable() {
+            const res = await fetch(baseUrl,
+            {cache:'no-store'});
+            const data = await res.json();
+            console.log(data)
+            setAccounts(data?.items);
+        }
+
+        getAccountTable(); 
+    },[])
+
     return (
         <nav className={styles.navbar}>
-            <ul className={styles.navbar_nav}>
-                {navItems.map((content, index) => {
-                    return <NavItem content={content}/>
-                })}
+            <ul className={styles.navbar_nav} >
+                <h1 className={styles.current_user}>Current User: {currentUser}</h1>
+                <NavButton content={content} />
+                <NavDropDown accounts={accounts} setCurrentUser={setCurrentUser} />
             </ul>
         </nav>
     )

@@ -32,8 +32,11 @@ a {
 }
 
 .title_btn {
-    background-color: #38393a;
+    background: none;
+    border: none;
+    color: white;
     min-width: 100px;
+    cursor: pointer;
     padding: 3px;
     margin: 1px;
     display: flex;
@@ -50,12 +53,12 @@ a {
     position: absolute;
     background-color: #38393a;
     top: 58px;
-    width: 300px;
-    transform: translate(-45%);
+    width: 200px;
+    transform: translate(-5%);
     border: 1px solid #474a4d;
     border-radius: 10%;
-    padding: 1rem;
-    overflow: hidden;
+    padding:1rem;
+    overflow-y: scroll;
     z-index: 9999;
 }
 
@@ -72,3 +75,8 @@ a {
     background-color: #525357;
 }
 
+.current_user {
+    position: absolute;
+    left: 1%;
+    color: white;
+}
