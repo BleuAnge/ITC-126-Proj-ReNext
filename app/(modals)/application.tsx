@@ -1,18 +1,22 @@
 'use client'
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import React from "react";
+import { useGlobalState } from "../(utility)/save_state";
 import "../(utility)/modal.css";
 
-function Application_Modal({ setApplicationShow }) {
+function Application_Modal({ setApplicationShow } : any) {
+    const [currentUserData] = useState({
+        username: useGlobalState("username").toString(),
+        user_id: useGlobalState("userID").toString(),
+    })
     const [first_name, setFirstName] = useState(' ');
     const [last_name, setLastName] = useState(' ');
     const [email, setEmail] = useState(' ');
-    const [job_position, setJobPosition] = useState(' ');
+    const [job_position, setJobPosition] = useState('product_manager');
     const application_status = "New";
 
-    const router = useRouter();
+    const sender = currentUserData.username.slice(0, currentUserData.username.length - 13)
+    const sender_id = currentUserData.user_id.slice(0, currentUserData.user_id.length - 13)
 
     const create = async() => {
         await fetch('http://127.0.0.1:8090/api/collections/application_table/records', {
@@ -21,6 +25,8 @@ function Application_Modal({ setApplicationShow }) {
                 'Content-Type':'application/json',
             },
             body: JSON.stringify({
+                sender,
+                sender_id,
                 first_name,
                 last_name,
                 email,
@@ -33,7 +39,6 @@ function Application_Modal({ setApplicationShow }) {
         setLastName(' ');
         setEmail(' ');
         setJobPosition(' ');
-        router.refresh();
         setApplicationShow(false);
     }
 
@@ -45,28 +50,28 @@ function Application_Modal({ setApplicationShow }) {
                     <button onClick={() => setApplicationShow(false)}> X </button>
                 </div>
                 <div className="modal_body">
-                    <label for="firstName">First Name: </label>
+                    <label htmlFor="firstName">First Name: </label>
                     <input 
                         className="firstName"
                         type="text" 
                         value={first_name}
                         onChange={(e) => setFirstName(e.target.value)}
                     /><br></br><br></br>
-                    <label for="lastName">Last Name: </label>
+                    <label htmlFor="lastName">Last Name: </label>
                     <input 
                         className="lastName"
                         type="text" 
                         value={last_name}
                         onChange={(e) => setLastName(e.target.value)}
                     /><br></br><br></br>
-                    <label for="email">Email: </label>
+                    <label htmlFor="email">Email: </label>
                     <input 
                         className="email"
                         type="text" 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     /><br></br><br></br>
-                    <label for="jobPosition">Job Position: </label>
+                    <label htmlFor="jobPosition">Job Position: </label>
                     <select
                         className="jobPosition"
                         value={job_position}

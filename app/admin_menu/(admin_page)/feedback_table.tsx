@@ -39,6 +39,7 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                     <table>
                         <thead>
                             <tr>
+                                <th>Feedback Sender</th>
                                 <th>Feedback Note</th>
                                 <th>Feedback Rate</th>
                                 <th>Date</th>
@@ -83,11 +84,12 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
 }
 
 function FeedbackList({ feedback }: any) {
-    const {feedback_rate, feedback_note, feedback_status, created} = feedback || {};
+    const {sender, feedback_rate, feedback_note, feedback_status, created} = feedback || {};
 
     return (
         <>
-            <td><button className='button_clear'>{feedback_note}</button></td>
+            <td><button className='button_clear'>{sender}</button></td>
+            <td>{feedback_note}</td>
             <td>{feedback_rate}</td>
             <td>{created}</td>
             <td>{feedback_status}</td>        
@@ -109,7 +111,7 @@ function FeedbackTicket({ feedbackID, setModalShow }: any) {
         getFeedbackTable(); 
     },[])
 
-    const { feedback_rate, feedback_note } = feedbackData || {}
+    const { sender, sender_id, feedback_rate, feedback_note } = feedbackData || {}
 
     const update = async () => {
         await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${feedbackID}`, {
@@ -136,6 +138,20 @@ function FeedbackTicket({ feedbackID, setModalShow }: any) {
                     </button>
                 </div>
                 <div className="modal_body">
+                    <label htmlFor="feedbacksender">Feedback Sender: </label><br></br>
+                    <input 
+                        className="feedbacksender"
+                        type="text" 
+                        value={sender}
+                        readOnly
+                    /><br></br><br></br>
+                    <label htmlFor="feedbacksenderid">Feedback Sender ID: </label><br></br>
+                    <input 
+                        className="feedbacksenderid"
+                        type="text" 
+                        value={sender_id}
+                        readOnly
+                    /><br></br><br></br>
                     <label htmlFor="feedbackrate">Feedback Rate: </label><br></br>
                     <input 
                         className="feedbackrate"

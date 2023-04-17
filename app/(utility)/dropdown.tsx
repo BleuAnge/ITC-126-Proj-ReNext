@@ -16,7 +16,7 @@ export default function DropDown({submenus, setOpenDropDown, setCurrentUser}: an
 }
 
 function DropDownItem({account, setOpenDropDown, setCurrentUser} : any) {
-    const { username, usertype } = account || {}
+    const { id, username, usertype } = account || {}
 
     const pageUrl = usertype == "ADMIN" ? "admin_menu" : 
                     usertype == "HR" ? "hr_menu" :
@@ -29,6 +29,7 @@ function DropDownItem({account, setOpenDropDown, setCurrentUser} : any) {
             setOpenDropDown(false)
             setGlobalState("username", username)
             setGlobalState("usertype", usertype)
+            setGlobalState("userID", id)
             }}>
             <h4>{username}<br></br><small>{usertype}</small></h4>    
         </Link>

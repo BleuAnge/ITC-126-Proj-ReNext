@@ -59,6 +59,7 @@ textarea {
     font-size: 1.7rem;
     text-align: center;
     border: 1px solid black;
+    overflow-y: scroll;
 }
 
 .modal_container .modal_footer {

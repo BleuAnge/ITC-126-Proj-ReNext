@@ -1,18 +1,22 @@
 'use client';
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import React from "react";
+import { useGlobalState } from "../(utility)/save_state";
 import "../(utility)/modal.css";
 
-function ReportModal({ setReportShow }) {
-    const [report_sender, setReportSender] = useState(' ');
-    const [report_type, setReportType] = useState(' ');
+function ReportModal({ setReportShow } : any) {
+    const [currentUserData] = useState({
+        username: useGlobalState("username").toString(),
+        user_id: useGlobalState("userID").toString(),
+    })
+    const [report_type, setReportType] = useState('manage_reciept');
     const [order_id, setOrderID] = useState(' ');
     const [report_note, setReportNote] = useState(' ');
     const report_status = "New";
+    const assigned_to = " "
 
-    const router = useRouter();
+    const sender = currentUserData.username.slice(0, currentUserData.username.length - 13)
+    const sender_id = currentUserData.user_id.slice(0, currentUserData.user_id.length - 13)
 
     const create = async() => {
         await fetch('http://127.0.0.1:8090/api/collections/report_table/records', {
@@ -21,19 +25,19 @@ function ReportModal({ setReportShow }) {
                 'Content-Type':'application/json',
             },
             body: JSON.stringify({
-                report_sender,
+                sender,
+                sender_id,
                 order_id,
                 report_note,
                 report_type,
                 report_status,
+                assigned_to,
             }),
         });
 
-        setReportSender(' ');
         setReportType(' ');
         setOrderID(' ');
         setReportNote(' ');
-        router.refresh();
         setReportShow(false);
     }
 
@@ -45,14 +49,14 @@ function ReportModal({ setReportShow }) {
                     <button onClick={() => setReportShow(false)}> X </button>
                 </div>
                 <div className="modal_body">
-                    <label for="reportSender">Report Sender: </label><br></br>
+                    <label htmlFor="reportSender">Report Sender: </label><br></br>
                     <input 
                         className="reportSender"
                         type="text" 
-                        value={report_sender}
-                        onChange={(e) => setReportSender(e.target.value)}
+                        value={sender}
+                        readOnly
                     /><br></br>
-                    <label for="reportType">Report Type:</label><br></br>
+                    <label htmlFor="reportType">Report Type:</label><br></br>
                     <select
                         className="reportType"
                         value={report_type}
@@ -63,14 +67,14 @@ function ReportModal({ setReportShow }) {
                         <option value="delivery_issue">Delivery Issue</option>
                         <option value="service_issue">Service Issue</option>    
                     </select><br></br><br></br>
-                    <label for="orderID">Order ID: </label><br></br>
+                    <label htmlFor="orderID">Order ID: </label><br></br>
                     <input 
                         className="orderID"
                         type="text" 
                         value={order_id}
                         onChange={(e) => setOrderID(e.target.value)}
                     /><br></br>
-                    <label for="reportNote">Report Note: </label><br></br>
+                    <label htmlFor="reportNote">Report Note: </label><br></br>
                     <textarea
                         className="reportNote"
                         value={report_note}

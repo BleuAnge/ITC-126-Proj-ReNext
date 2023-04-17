@@ -16,14 +16,17 @@ export default function Navbar(){
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/account_table/records?page=1&perPage=30'
     
-    const currentUserdata = {username: useGlobalState<any>("username"), usertype: useGlobalState<any>("usertype")}
+    const currentUserdata = {
+        username: useGlobalState<any>("username"), 
+        usertype: useGlobalState<any>("usertype"), 
+        userID: useGlobalState<any>("userID")
+    }
 
     useEffect(() => {
         async function getAccountTable() {
             const res = await fetch(baseUrl,
             {cache:'no-store'});
             const data = await res.json();
-            console.log(data)
             setAccounts(data?.items);
         }
 
@@ -34,7 +37,7 @@ export default function Navbar(){
         <nav className={styles.navbar}>
             <ul className={styles.navbar_nav} >
                 <h1 className={styles.current_user}>Current User: { currentUserdata.username }</h1>
-                <h1 className={styles.current_usertype}>Current Usertype: { currentUserdata.usertype }</h1>
+                <h1 className={styles.current_usertype}>Current Usertype: { currentUserdata.usertype } / ID: <small>{currentUserdata.userID}</small></h1>
                 <NavButton content={content} />
                 <NavDropDown accounts={accounts} setCurrentUser={setCurrentUser} />
             </ul>

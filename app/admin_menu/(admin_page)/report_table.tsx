@@ -83,11 +83,11 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
 }
 
 function ReportList({ report }: any) {
-    const {report_sender, report_note, report_type, report_status, created} = report || {};
+    const {sender, report_note, report_type, report_status, created} = report || {};
 
     return (
         <>
-            <td>{report_sender}</td>
+            <td>{sender}</td>
             <td>{report_note}</td>
             <td>{report_type}</td>
             <td>{created}</td>
@@ -110,7 +110,7 @@ function ReportTicket({ reportID, setModalShow }: any) {
         getReportTable(); 
     },[])
 
-    const {report_sender, order_id, report_note, report_type} = reportData || {}
+    const {sender, order_id, report_note, report_type} = reportData || {}
 
     const update = async() => {
         await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
@@ -141,7 +141,7 @@ function ReportTicket({ reportID, setModalShow }: any) {
                     <input 
                         className="reportSender"
                         type="text" 
-                        value={report_sender}
+                        value={sender}
                         readOnly
                     /><br></br>
                     <label htmlFor="reportType">Report Type:</label><br></br>
