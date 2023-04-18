@@ -49,25 +49,27 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                             </tr>
                         </thead>
                         {
-                            reports?.map((report: { id: any; }) => { return (
-                                <tbody>
-                                    <tr>
-                                        <ReportList report={report}/>
-                                        <td><button className='button_clear' onClick={() => {
-                                            setReportID(report.id)
-                                            setModalShow(true)
-                                        }}>
-                                            Update
-                                        </button></td>
-                                        <td><button className='button_clear' onClick={() => {
-                                            setReportID(report.id)
-                                            deleteTicket()
-                                        }}>
-                                            Delete
-                                        </button></td>
-                                    </tr>
-                                </tbody>
-                            )})
+                            reports?.map((report: { id: any; }) => { 
+                                return (
+                                    <tbody>
+                                        <tr>
+                                            <ReportList report={report}/>
+                                            <td><button className='button_clear' onClick={() => {
+                                                setReportID(report.id)
+                                                setModalShow(true)
+                                            }}>
+                                                Update
+                                            </button></td>
+                                            <td><button className='button_clear' onClick={() => {
+                                                setReportID(report.id)
+                                                deleteTicket()
+                                            }}>
+                                                Delete
+                                            </button></td>
+                                        </tr>
+                                    </tbody>
+                                )
+                            })
                         } 
                     </table>
                 </div>   
@@ -98,7 +100,10 @@ function ReportList({ report }: any) {
 
 function ReportTicket({ reportID, setModalShow }: any) {
     const [reportData, setReportData] = useState<any>()
-    const [report_status, setReportStatus] = useState("Seen")
+    const [accounts, setAccounts] = useState<any>()
+    const [current_report_status, setReportStatus] = useState<any>("Seen")
+    const [assigned_to, setAssigned_To] = useState<any>("Grant Maneetapho")
+    const [current_assigned_to_ID, setAssigned_To_ID] = useState<any>()
     
     useEffect(() => {
         async function getReportTable() {
@@ -107,12 +112,21 @@ function ReportTicket({ reportID, setModalShow }: any) {
             setReportData(data)
         }
 
-        getReportTable(); 
+        async function getAccountTable() {
+            const res = await fetch(`http://127.0.0.1:8090/api/collections/account_table/records?page=1&perPage=30`, {cache:'no-store'})
+            const data = await res.json()
+            setAccounts(data?.items)
+        }
+
+        getReportTable();
+        getAccountTable(); 
     },[])
 
-    const {sender, order_id, report_note, report_type} = reportData || {}
+    const { sender, order_id, report_note, report_type, report_status , assigned_to_ID} = reportData || {}
+    
+    const updateSeen = async() => {
+        const report_status = current_report_status
 
-    const update = async() => {
         await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
             method: 'PATCH',
             headers: {
@@ -124,6 +138,38 @@ function ReportTicket({ reportID, setModalShow }: any) {
         });
     }
 
+    const updateAssigned = async() => {
+        const report_status = current_report_status
+        const assigned_to_ID = current_assigned_to_ID
+
+        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+                report_status,
+                assigned_to,
+                assigned_to_ID,
+            }),
+        });
+    }
+
+    const updateApproved = async() => {
+        const report_status = current_report_status
+
+        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+                report_status,
+            }),
+        });
+    }
+
+
     return (
         <div className="modal_background">
             <div className="modal_container">
@@ -131,7 +177,7 @@ function ReportTicket({ reportID, setModalShow }: any) {
                     <h1>Report Ticket</h1>
                     <button onClick={() => {
                         setModalShow(false)
-                        update()
+                        updateSeen()
                     }}> 
                         X 
                     </button>
@@ -163,23 +209,72 @@ function ReportTicket({ reportID, setModalShow }: any) {
                         className="reportNote"
                         value={report_note}
                         readOnly
-                    />
+                    /><br></br>
+                    <label htmlFor="assign_to">Assign Ticket To:</label><br></br>
+                    <select
+                        disabled={report_status != "Waiting for Approval" ? false : true}
+                        className="reportType"
+                        value={report_status != "Waiting for Approval" ? current_assigned_to_ID : assigned_to_ID}
+                        onChange={(e)=>{ 
+                            setAssigned_To_ID(e.target.value)
+                            setAssigned_To(e.target.options[e.target.selectedIndex].text)
+                            setReportStatus("Processing")
+                            }}>
+                                {
+                                    accounts?.map((account: {id: any}) => {
+                                        return (
+                                            <GetAccounts account={account} />
+                                        )
+                                    })
+                                }    
+                    </select><br></br><br></br>
+                    {
+                        report_status == "Waiting for Approval" ? 
+                            <button onClick={() => setReportStatus("Approved")}>Approve Ticket</button>
+                        : null
+                    }
+                    
                 </div>
                 <div className="modal_footer">
                     <button id="cancel_button" onClick={() => {
                         setModalShow(false)
-                        update()
+                        {
+                            report_status != "Waiting for Approval" ?
+                                updateSeen()
+                            : null
+                        }
+                        
                     }}>
                         Cancel
                     </button>
                     <button onClick={() => {
                         setModalShow(false)
-                        update()
+                        {
+                            report_status != "Waiting for Approval" ?
+                                updateAssigned()
+                            : updateApproved()
+                        }
                     }}>
                         Save
                     </button>
                 </div>
             </div>
         </div>
+    )
+}
+
+function GetAccounts({ account }: any) {
+    const {id, username, usertype} = account || {}
+
+    return (
+        <>
+            {
+                usertype == "IT" ? 
+                    <option value={id}>{username}</option>
+                : usertype == "PARTNER" ?
+                    <option value={id}>{username}</option>
+                : null
+            }
+        </>
     )
 }

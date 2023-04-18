@@ -4,19 +4,18 @@ import { useEffect, useState } from 'react';
 import '../(utility)/modal.css';
 import '../(utility)/table.css';
 
-export default function ReportTable({setAdminMenu, setReportMenu}: any) {
+export default function ReportTable() {
     const [reports, setReport] = useState<any>()
     const [showModal, setModalShow] = useState(false)
     const [reportID, setReportID] = useState()
-    
-    const ReturnToAdminMenu = () => {
-        setAdminMenu(true); 
-        setReportMenu(false);
-    }
+    const [currentUserData, setCurrentUserData] = useState<any>(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || ''))
+    const [id, setID] = useState()
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/report_table/records?page=1&perPage=30'
-
+    
     useEffect(() => {
+        setCurrentUserData(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || ''))
+        
         async function getReportTable() {
             const res = await fetch(baseUrl,
             {cache:'no-store'});
@@ -26,6 +25,12 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
 
         getReportTable(); 
     },[])
+
+    useEffect(() => {
+        const { id } = currentUserData || {}
+        setID(id)
+        console.log(id)
+    }, [currentUserData])
 
     const deleteTicket = async () => {
         await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
@@ -52,28 +57,18 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                         </thead>
                         {
                             reports?.map((report: { id: any; }) => { return (
-                                <tbody>
-                                    <tr>
-                                        <ReportList report={report}/>
-                                        <td><button className='button_clear' onClick={() => {
-                                            setReportID(report.id)
-                                            setModalShow(true)
-                                        }}>
-                                            Update
-                                        </button></td>
-                                        <td><button className='button_clear' onClick={() => {
-                                            setReportID(report.id)
-                                            deleteTicket()
-                                        }}>
-                                            Delete
-                                        </button></td>
-                                    </tr>
-                                </tbody>
+                                <>
+                                    <ReportList 
+                                        report={report} 
+                                        id = { id }
+                                        setReportID={setReportID} 
+                                        setModalShow={setModalShow} 
+                                        deleteTicket={deleteTicket}/>
+                                </>
                             )})
                         } 
                     </table>
                 </div>   
-                <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
             </div>
             {
                 showModal ?
@@ -84,23 +79,44 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
     )
 }
 
-function ReportList({ report }: any) {
-    const {report_sender, report_note, report_type, report_status, created} = report || {};
-
+function ReportList({ report, id, setReportID, setModalShow, deleteTicket }: any) {
+    const {sender, report_note, report_type, report_status, created, assigned_to_ID} = report || {};
+    console.log(id)
     return (
         <>
-            <td>{report_sender}</td>
-            <td>{report_note}</td>
-            <td>{report_type}</td>
-            <td>{created}</td>
-            <td>{report_status}</td>     
+            {
+                assigned_to_ID === id ? 
+                <tbody>
+                    <tr>
+                        <td>{sender}</td>
+                        <td>{report_note}</td>
+                        <td>{report_type}</td>
+                        <td>{created}</td>
+                        <td>{report_status}</td>     
+                        <td><button className='button_clear' onClick={() => {
+                            setReportID(report.id)
+                            setModalShow(true)
+                        }}>
+                            Update
+                        </button></td>
+                        <td><button className='button_clear' onClick={() => {
+                            setReportID(report.id)
+                            deleteTicket()
+                        }}>
+                            Delete
+                        </button></td>
+                    </tr>
+                </tbody>
+                : null
+            }
         </>     
     )
 }
 
 function ReportTicket({ reportID, setModalShow }: any) {
     const [reportData, setReportData] = useState<any>()
-    const [report_status, setReportStatus] = useState("Seen")
+    const [report_status] = useState("Waiting for Approval")
+    const [isDone, setIsDone] = useState(false)
     
     useEffect(() => {
         async function getReportTable() {
@@ -166,17 +182,19 @@ function ReportTicket({ reportID, setModalShow }: any) {
                         value={report_note}
                         readOnly
                     />
+                    <button onClick={() => setIsDone(true)}>
+                        Finish Report
+                    </button>
                 </div>
                 <div className="modal_footer">
                     <button id="cancel_button" onClick={() => {
                         setModalShow(false)
-                        update()
                     }}>
                         Cancel
                     </button>
                     <button onClick={() => {
                         setModalShow(false)
-                        update()
+                        isDone ? update() : null
                     }}>
                         Save
                     </button>

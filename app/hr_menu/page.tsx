@@ -4,20 +4,12 @@ import { useEffect, useState } from 'react';
 import '../(utility)/modal.css';
 import '../(utility)/table.css';
 
-export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
-    const [currentUserData] = useState(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
+export default function ApplicationTable() {
+    const [currentUserData, setCurrentUserData] = useState(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
     const [applications, setApplication] = useState<any>()
     const [applicationID, setApplicationID] = useState()
     const [showModal, setModalShow] = useState(false)
-
-    useEffect(() => {
-        console.log(currentUserData)
-    }, [currentUserData])
-
-    const ReturnToAdminMenu = () => {
-        setAdminMenu(true); 
-        setApplyMenu(false);
-    }
+    const [id, setID] = useState()
 
     useEffect(() => {
         async function getApplicationTable() {
@@ -30,6 +22,12 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
 
         getApplicationTable(); 
     },[])
+
+    useEffect(() => {
+        const { id } = currentUserData || {}
+        setID(id)
+        console.log(id)
+    }, [currentUserData])
 
     const deleteTicket = async () => {
         await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${applicationID}`, {
@@ -56,15 +54,12 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
                         </thead>
                         {
                             applications?.map((application: { id: any; }) => { return (
-                                
-                                        <ApplicationList 
-                                            application={ application } 
-                                            currentUserData={ currentUserData }  
-                                            setApplicationID={ setApplicationID }
-                                            setModalShow={setModalShow}
-                                            deleteTicket={deleteTicket}/>
-                                        
-                                   
+                                <ApplicationList 
+                                    application={ application } 
+                                    currentUserData={ currentUserData }  
+                                    setApplicationID={ setApplicationID }
+                                    setModalShow={setModalShow}
+                                    deleteTicket={deleteTicket}/>
                             )})
                         }  
                     </table>
@@ -81,7 +76,7 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
 
 function ApplicationList({ application, currentUserData, setApplicationID, setModalShow, deleteTicket }: any) {
     const {assigned_to_ID, first_name, last_name, email, application_status, created} = application || {};
-    const { usertype, id } = currentUserData || {}
+    const { id } = currentUserData || {}
 
     return (
         <>
@@ -118,7 +113,7 @@ function ApplicationList({ application, currentUserData, setApplicationID, setMo
 
 function ApplicationTicket({ applicationID, setModalShow }: any) {
     const [applicationData, setApplicationData] = useState<any>()
-    const [application_status, setApplicationStatus] = useState("Seen")
+    const [application_status] = useState("Seen")
 
     useEffect(() => {
         async function getApplicationTable() {
