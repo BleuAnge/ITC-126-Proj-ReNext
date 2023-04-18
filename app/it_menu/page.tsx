@@ -32,12 +32,6 @@ export default function ReportTable() {
         console.log(id)
     }, [currentUserData])
 
-    const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
-            method: 'Delete',
-        })
-    }
-
     return (
         <>
             <div className='main_div'>
@@ -52,7 +46,6 @@ export default function ReportTable() {
                                 <th>Date Sent</th>
                                 <th>Report Status</th>
                                 <th></th>
-                                <th></th>
                             </tr>
                         </thead>
                         {
@@ -62,8 +55,7 @@ export default function ReportTable() {
                                         report={report} 
                                         id = { id }
                                         setReportID={setReportID} 
-                                        setModalShow={setModalShow} 
-                                        deleteTicket={deleteTicket}/>
+                                        setModalShow={setModalShow} />
                                 </>
                             )})
                         } 
@@ -98,12 +90,6 @@ function ReportList({ report, id, setReportID, setModalShow, deleteTicket }: any
                             setModalShow(true)
                         }}>
                             Update
-                        </button></td>
-                        <td><button className='button_clear' onClick={() => {
-                            setReportID(report.id)
-                            deleteTicket()
-                        }}>
-                            Delete
                         </button></td>
                     </tr>
                 </tbody>
@@ -140,6 +126,8 @@ function ReportTicket({ reportID, setModalShow }: any) {
                 report_status,
             }),
         });
+
+        window.location.reload()
     }
 
     return (

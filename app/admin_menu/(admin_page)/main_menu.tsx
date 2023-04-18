@@ -27,7 +27,7 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
 
             {/*draw a admin inanis for this part*/}
             <div className='admin-image-section'>
-                <h1>image here</h1>
+                
             </div>
         </div>
     )

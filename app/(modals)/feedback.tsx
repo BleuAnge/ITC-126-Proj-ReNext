@@ -47,8 +47,9 @@ function Feedback_Modal({ setFeedbackShow }: any) {
                         value={feedback_rate}
                         onChange={(e) => setFeedbackRate(parseInt(e.target.value))}
                     /><br></br><br></br>
-                    <label htmlFor="feedbackrate">Feedback Note: </label><br></br>
+                    <label htmlFor="feedback_note">Feedback Note: </label><br></br>
                     <textarea
+                        className="feedback_note"
                         value={feedback_note}
                         onChange={(e) => setFeedbackNote(e.target.value)}
                     />

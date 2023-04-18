@@ -128,7 +128,7 @@ function ReportTicket({ reportID, setModalShow }: any) {
         getReportTable(); 
     },[])
 
-    const {report_sender, order_id, report_note, report_type} = reportData || {}
+    const {sender, order_id, report_note, report_type} = reportData || {}
 
     const update = async() => {
         await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
@@ -159,9 +159,9 @@ function ReportTicket({ reportID, setModalShow }: any) {
                     <input 
                         className="reportSender"
                         type="text" 
-                        value={report_sender}
+                        value={sender}
                         readOnly
-                    /><br></br>
+                    /><br></br><br></br>
                     <label htmlFor="reportType">Report Type:</label><br></br>
                     <input
                         className="reportType"
@@ -175,15 +175,17 @@ function ReportTicket({ reportID, setModalShow }: any) {
                         type="text" 
                         value={order_id}
                         readOnly
-                    /><br></br>
+                    /><br></br><br></br>
                     <label htmlFor="reportNote">Report Note: </label><br></br>
                     <textarea
                         className="reportNote"
                         value={report_note}
                         readOnly
-                    />
-                    <button onClick={() => setIsDone(true)}>
-                        Finish Report
+                    /><br></br>
+                    <button 
+                        disabled={isDone ? true : false}
+                        onClick={() => setIsDone(true)}>
+                            Finish Report
                     </button>
                 </div>
                 <div className="modal_footer">

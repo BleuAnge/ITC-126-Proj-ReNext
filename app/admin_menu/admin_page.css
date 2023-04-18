@@ -5,7 +5,7 @@
 }
 
 .admin-main-body {
-    height: 100vh;
+    height: 80vh;
     margin: 0px;
     overflow: hidden;
 
@@ -15,7 +15,7 @@
 }
 
 .admin-body-divider {
-    height: 100vh;
+    height: 80vh;
     width: 60vw;
     margin: 0px;
     overflow: hidden;
@@ -26,9 +26,9 @@
 }
 
 .admin-ticket-container {
-    background-color: var(--main-color);
+    /* background-color: var(--main-color); */
     height: 44vh;
-    border: 3px solid var(--tertiary-color);
+    /* border: 3px solid var(--tertiary-color); */
     border-radius: 5%;
     display: flex;
     align-items: center;
@@ -38,9 +38,9 @@
 }
 
 .admin-menu-container {
-    background-color: var(--main-color);
+    /* background-color: var(--main-color); */
     height: 43vh;
-    border: 3px solid var(--tertiary-color);
+    /* border: 3px solid var(--tertiary-color); */
     border-radius: 5%;
     padding: 10px;
     display: flex;
@@ -53,7 +53,7 @@
 .admin-menu-container > .admin-section-card {
     width: 25vmin;
     aspect-ratio: 5/ 7;
-    border: 1px solid var(--tertiary-color);
+    /* border: 1px solid var(--tertiary-color); */
     border-radius: 10%;
 
     color: white;
@@ -67,10 +67,10 @@
 }
 
 .admin-image-section {
-    background-color: var(--main-color);
-    height: 90vh;
+    /* background-color: var(--main-color); */
+    height: 80vh;
     width: 40vw;
     overflow: hidden;
-    border: 3px solid var(--tertiary-color);
+    /* border: 3px solid var(--tertiary-color); */
     border-radius: 5%;
 }

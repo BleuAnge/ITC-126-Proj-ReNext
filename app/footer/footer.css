@@ -1,0 +1,26 @@
+.footer_bar {
+    position: fixed;
+    bottom: 0%;
+    left: 0%;
+    height: 60px;
+    width: 100vw;
+    background-color: rgb(6, 0, 0);
+    opacity: 1.0;
+    border-top: 3px solid #474a4d;
+}
+
+.current_user {
+    font-size: 20px;
+    position: absolute;
+    left: 1%;
+    bottom: 0%;
+    color: white;
+}
+
+.current_usertype {
+    font-size: 20px;
+    position: absolute;
+    left: 30%;
+    bottom: 0%;
+    color: white;
+}

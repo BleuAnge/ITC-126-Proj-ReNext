@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import '../../(utility)/modal.css';
 import '../../(utility)/table.css';
 
@@ -51,23 +51,11 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                         {
                             reports?.map((report: { id: any; }) => { 
                                 return (
-                                    <tbody>
-                                        <tr>
-                                            <ReportList report={report}/>
-                                            <td><button className='button_clear' onClick={() => {
-                                                setReportID(report.id)
-                                                setModalShow(true)
-                                            }}>
-                                                Update
-                                            </button></td>
-                                            <td><button className='button_clear' onClick={() => {
-                                                setReportID(report.id)
-                                                deleteTicket()
-                                            }}>
-                                                Delete
-                                            </button></td>
-                                        </tr>
-                                    </tbody>
+                                    <ReportList 
+                                        report={report} 
+                                        setReportID={setReportID} 
+                                        setModalShow={setModalShow} 
+                                        deleteTicket={deleteTicket}/>
                                 )
                             })
                         } 
@@ -84,16 +72,32 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
     )
 }
 
-function ReportList({ report }: any) {
-    const {sender, report_note, report_type, report_status, created} = report || {};
+function ReportList({ report, setReportID, setModalShow, deleteTicket }: any) {
+    const {sender, id, report_note, report_type, report_status, created} = report || {};
 
     return (
         <>
-            <td>{sender}</td>
-            <td>{report_note}</td>
-            <td>{report_type}</td>
-            <td>{created}</td>
-            <td>{report_status}</td>     
+            <tbody>
+                <tr>
+                    <td>{sender}</td>
+                    <td>{report_note}</td>
+                    <td>{report_type}</td>
+                    <td>{created}</td>
+                    <td>{report_status}</td> 
+                    <td><button className='button_clear' onClick={() => {
+                        setReportID(id)
+                        setModalShow(true)
+                    }}>
+                        Update
+                    </button></td>
+                    <td><button className='button_clear' onClick={() => {
+                        setReportID(id)
+                        deleteTicket()
+                    }}>
+                        Delete
+                    </button></td>
+                </tr>
+            </tbody>    
         </>     
     )
 }
@@ -136,6 +140,8 @@ function ReportTicket({ reportID, setModalShow }: any) {
                 report_status,
             }),
         });
+
+        location.reload()
     }
 
     const updateAssigned = async() => {
@@ -153,6 +159,8 @@ function ReportTicket({ reportID, setModalShow }: any) {
                 assigned_to_ID,
             }),
         });
+
+        location.reload()
     }
 
     const updateApproved = async() => {
@@ -167,6 +175,8 @@ function ReportTicket({ reportID, setModalShow }: any) {
                 report_status,
             }),
         });
+
+        location.reload()
     }
 
 
@@ -177,7 +187,11 @@ function ReportTicket({ reportID, setModalShow }: any) {
                     <h1>Report Ticket</h1>
                     <button onClick={() => {
                         setModalShow(false)
-                        updateSeen()
+                        {
+                            report_status != "Waiting for Approval" && report_status != "Approved"?
+                                updateSeen()
+                            : null
+                        }
                     }}> 
                         X 
                     </button>
@@ -229,7 +243,7 @@ function ReportTicket({ reportID, setModalShow }: any) {
                                 }    
                     </select><br></br><br></br>
                     {
-                        report_status == "Waiting for Approval" ? 
+                        report_status == "Waiting for Approval" && report_status != "Approved"? 
                             <button onClick={() => setReportStatus("Approved")}>Approve Ticket</button>
                         : null
                     }
@@ -239,7 +253,7 @@ function ReportTicket({ reportID, setModalShow }: any) {
                     <button id="cancel_button" onClick={() => {
                         setModalShow(false)
                         {
-                            report_status != "Waiting for Approval" ?
+                            report_status != "Waiting for Approval" && report_status != "Approved"?
                                 updateSeen()
                             : null
                         }
@@ -250,9 +264,11 @@ function ReportTicket({ reportID, setModalShow }: any) {
                     <button onClick={() => {
                         setModalShow(false)
                         {
-                            report_status != "Waiting for Approval" ?
+                            report_status != "Waiting for Approval" && report_status != "Approved" ?
                                 updateAssigned()
-                            : updateApproved()
+                            : report_status != "Approved" ? 
+                                updateApproved()
+                            : null
                         }
                     }}>
                         Save
