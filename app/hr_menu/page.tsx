@@ -5,9 +5,14 @@ import '../(utility)/modal.css';
 import '../(utility)/table.css';
 
 export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
+    const [currentUserData] = useState(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
     const [applications, setApplication] = useState<any>()
     const [applicationID, setApplicationID] = useState()
     const [showModal, setModalShow] = useState(false)
+
+    useEffect(() => {
+        console.log(currentUserData)
+    }, [currentUserData])
 
     const ReturnToAdminMenu = () => {
         setAdminMenu(true); 
@@ -51,28 +56,19 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
                         </thead>
                         {
                             applications?.map((application: { id: any; }) => { return (
-                                <tbody>
-                                    <tr>
-                                        <ApplicationList application={application}/>
-                                        <td><button className='button_clear' onClick={() => {
-                                                setApplicationID(application.id)
-                                                setModalShow(true)
-                                            }}>
-                                                Update
-                                            </button></td>
-                                        <td><button className='button_clear' onClick={()=>{ 
-                                                setApplicationID(application.id)
-                                                deleteTicket()
-                                            }}>
-                                                Delete
-                                            </button></td>
-                                    </tr>
-                                </tbody>
+                                
+                                        <ApplicationList 
+                                            application={ application } 
+                                            currentUserData={ currentUserData }  
+                                            setApplicationID={ setApplicationID }
+                                            setModalShow={setModalShow}
+                                            deleteTicket={deleteTicket}/>
+                                        
+                                   
                             )})
                         }  
                     </table>
                 </div>
-                <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
             </div>
             {
                 showModal ?
@@ -83,16 +79,39 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
     )
 }
 
-function ApplicationList({ application }: any) {
-    const {first_name, last_name, email, application_status, created} = application || {};
+function ApplicationList({ application, currentUserData, setApplicationID, setModalShow, deleteTicket }: any) {
+    const {assigned_to_ID, first_name, last_name, email, application_status, created} = application || {};
+    const { usertype, id } = currentUserData || {}
 
     return (
         <>
-            <td>{first_name}</td>
-            <td>{last_name}</td>
-            <td>{email}</td>
-            <td>{created}</td>
-            <td>{application_status}</td>
+            {
+                assigned_to_ID === id ?
+                    <tbody>
+                        <tr>
+                            <td>{first_name}</td>
+                            <td>{last_name}</td>
+                            <td>{email}</td>
+                            <td>{created}</td>
+                            <td>{application_status}</td>
+                            <td>
+                                <button className='button_clear' onClick={() => {
+                                setApplicationID(application.id)
+                                setModalShow(true)}}>
+                                    Update
+                                </button>
+                            </td>
+                            <td>
+                                <button className='button_clear' onClick={()=>{ 
+                                setApplicationID(application.id)
+                                deleteTicket() }}>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                : null
+            }
         </>     
     )
 }
@@ -111,7 +130,7 @@ function ApplicationTicket({ applicationID, setModalShow }: any) {
         getApplicationTable(); 
     },[])
     
-    const {first_name, last_name, email, job_position} = applicationData || {}
+    const { first_name, last_name, email, job_position } = applicationData || {}
 
     const update = async() => {
         await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${applicationID}`, {

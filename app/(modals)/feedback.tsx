@@ -1,20 +1,16 @@
 'use client';
 
 import { useState } from "react";
-import { useGlobalState } from "../(utility)/save_state";
 import "../(utility)/modal.css";
 
 function Feedback_Modal({ setFeedbackShow }: any) {
     const [feedback_rate, setFeedbackRate] = useState(0)
     const [feedback_note, setFeedbackNote] = useState(' ')
     const feedback_status = "New";
-    const [currentUserData] = useState({
-        username: useGlobalState("username").toString(),
-        user_id: useGlobalState("userID").toString(),
-    })
+    const [currentUserData] = useState<any>(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || ''))
 
-    const sender = currentUserData.username.slice(0, currentUserData.username.length - 13)
-    const sender_id = currentUserData.user_id.slice(0, currentUserData.user_id.length - 13)
+    const sender = currentUserData.username
+    const sender_id = currentUserData.id
     
     const create = async() => {
         await fetch('http://127.0.0.1:8090/api/collections/feedback_table/records', {

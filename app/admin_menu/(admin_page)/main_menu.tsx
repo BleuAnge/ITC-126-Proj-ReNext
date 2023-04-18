@@ -9,11 +9,9 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
                 <div className='admin-ticket-container'>
                     {
                         tickets?.map((ticket: { id: any; }) => { return <NewTicket key={ticket.id} ticket={ticket} />})
-                        //find a way to check if there are new tickets in database
                     }
                 </div>
 
-                {/* create a Table modal for each kind of tickets */}
                 <div className='admin-menu-container'>
                     <button id='admin-feedback-section' className='admin-section-card' onClick={ShowFeedbackClick}>
                         <h1 className='admin-menu-link'>Customer Feedback Tickets</h1>
