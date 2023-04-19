@@ -25,7 +25,7 @@ function DropDownItem({account, setOpenDropDown, setCurrentUser} : any) {
     return ( 
         <Link href={pageUrl} className={styles.menu_item} onClick={() => {
             setOpenDropDown(false)
-            setCurrentUser({username: username, usertype: usertype, id: id})
+            setCurrentUser({username: username, usertype: usertype, user_id: id})
             }}>
             <h4>{username}<br></br><small>{usertype}</small></h4>    
         </Link>

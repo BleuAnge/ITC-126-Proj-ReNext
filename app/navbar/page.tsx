@@ -6,7 +6,7 @@ import NavDropDown from './nav_dropdown';
 
 export default function Navbar({setCurrentUserData}: any){
     const [accounts, setAccounts] = useState<any>()
-    const [currentUser, setCurrentUser] = useState<any>(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}') || {username: "John Doe", usertype: "HIDDEN", id: "this nuts"})
+    const [currentUser, setCurrentUser] = useState<any>(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}') || {username: "John Doe", usertype: "HIDDEN", user_id: "this nuts"})
 
     useEffect(() => {
         window.localStorage.setItem('CURRENT_USER_DATA', JSON.stringify(currentUser))
