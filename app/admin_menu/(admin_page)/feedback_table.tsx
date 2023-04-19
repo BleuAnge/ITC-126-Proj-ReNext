@@ -1,32 +1,29 @@
 import { useEffect, useState } from 'react';
+import Global_Modal from '../../(modals)/modal';
 import '../../(utility)/modal.css';
 import '../../(utility)/table.css';
 
 export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
-    const [feedbacks, setFeedback] = useState<any>([])
-    const [feedbackID, setFeedbackID] = useState()
-    const [showModal, setModalShow] = useState(false)
-
-    const ReturnToAdminMenu = () => {
-        setAdminMenu(true); 
-        setFeedbackMenu(false);
-    }
+    const [ ticket_list, setTicketList ] = useState<any>()
+    const [ ticket_data, setTicketData ] = useState<any>([])
+    const ticket_type = "Feedback"
+    const [ showModal, setModalShow ] = useState(false)
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/feedback_table/records?page=1&perPage=30'
 
     useEffect(() => {
-        async function getFeedbackTable() {
+        async function getTicketList() {
             const res = await fetch(baseUrl,
             {cache:'no-store'});
             const data = await res.json();
-            setFeedback(data?.items);
+            setTicketList(data?.items);
         }
 
-        getFeedbackTable(); 
+        getTicketList(); 
     },[])
 
     const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${feedbackID}`, {
+        await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${ticket_data.id}`, {
             method: 'Delete',
         })
     }
@@ -49,18 +46,19 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                             </tr>
                         </thead>
                         {
-                            feedbacks?.map((feedback: { id: any; }) => {return (
+                            ticket_list?.map((ticket: { id: any; }) => {
+                                return (
                                     <tbody>
                                         <tr>
-                                            <FeedbackList key={feedback.id} feedback={feedback}/>
+                                            <FeedbackList key={ticket.id} feedback={ticket}/>
                                             <td><button className='button_clear' onClick={() => {
-                                                    setFeedbackID(feedback.id)
+                                                    setTicketData(ticket)
                                                     setModalShow(true)
                                                 }}>
                                                     Update
                                                 </button></td>
                                             <td><button className='button_clear' onClick={()=>{ 
-                                                    setFeedbackID(feedback.id)
+                                                    setTicketData(ticket)
                                                     deleteTicket()
                                                 }}>
                                                     Delete
@@ -72,11 +70,19 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                     </table>
                 </div>
                     
-                <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
+                <button className='return_button' onClick={() => {
+                    setAdminMenu(true)
+                    setFeedbackMenu(false)
+                    }}>
+                        Return to Admin Menu
+                </button>
             </div>
             {
                 showModal ?
-                    <FeedbackTicket feedbackID={feedbackID} setModalShow={setModalShow} />
+                    <Global_Modal 
+                        ticket_type = { ticket_type } 
+                        ticket_data={ ticket_data } 
+                        setModalShow={ setModalShow } />
                 : null
             }
         </>
@@ -94,98 +100,5 @@ function FeedbackList({ feedback }: any) {
             <td>{created}</td>
             <td>{feedback_status}</td>        
         </>     
-    )
-}
-
-function FeedbackTicket({ feedbackID, setModalShow }: any) {
-    const [feedbackData, setFeedbackData] = useState<any>()
-    const [feedback_status, setFeedbackStatus] = useState("Seen")
-
-    useEffect(() => {
-        async function getFeedbackTable() {
-            const res = await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${feedbackID}`);
-            const data = await res.json();
-            setFeedbackData(data);
-        }
-
-        getFeedbackTable(); 
-    },[])
-
-    const { sender, sender_id, feedback_rate, feedback_note } = feedbackData || {}
-
-    const update = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${feedbackID}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-            },
-            body: JSON.stringify({
-                feedback_status,
-            }),
-        })
-    }
-
-    return (
-        <div className="modal_background">
-            <div className="modal_container">
-                <div className="modal_header">
-                    <h1>Feedback Ticket</h1>
-                    <button onClick={() => {
-                        update()
-                        setModalShow(false)
-                    }}> 
-                        X 
-                    </button>
-                </div>
-                <div className="modal_body">
-                    <label htmlFor="feedbacksender">Feedback Sender: </label><br></br>
-                    <input 
-                        className="feedbacksender"
-                        type="text" 
-                        value={sender}
-                        readOnly
-                    /><br></br><br></br>
-                    <label htmlFor="feedbacksenderid">Feedback Sender ID: </label><br></br>
-                    <input 
-                        className="feedbacksenderid"
-                        type="text" 
-                        value={sender_id}
-                        readOnly
-                    /><br></br><br></br>
-                    <label htmlFor="feedbackrate">Feedback Rate: </label><br></br>
-                    <input 
-                        className="feedbackrate"
-                        type="number" 
-                        value={feedback_rate}
-                        readOnly
-                    /><br></br><br></br>
-                    <label htmlFor="feedbackrate">Feedback Note: </label><br></br>
-                    <textarea
-                        value={feedback_note}
-                        readOnly
-                    /><br></br><br></br>
-                    <label htmlFor="feedbackapproved">Feedback Rate: </label><br></br>
-                    <button onClick={() => {
-                        setFeedbackStatus("Approved")
-                    }}>
-                        Approve Feedback
-                    </button>
-                </div>
-                <div className="modal_footer">
-                    <button id="cancel_button" onClick={() => {
-                        update()
-                        setModalShow(false)
-                    }}>
-                        Cancel
-                    </button>
-                    <button onClick={() => {
-                        update()
-                        setModalShow(false)
-                    }}>
-                        Save
-                    </button>
-                </div>
-            </div>
-        </div>
     )
 }

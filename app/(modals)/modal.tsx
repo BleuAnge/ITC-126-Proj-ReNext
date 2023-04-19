@@ -6,9 +6,11 @@ import "../(utility)/modal.css";
 
 export default function Global_Modal({ 
     ticket_type , 
-    ticket_data = null , 
+    ticket_data , 
     setModalShow 
     } : any) {
+
+        console.log(ticket_data)
 
     return (
         <Modal_Ticket 

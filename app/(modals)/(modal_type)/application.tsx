@@ -7,6 +7,9 @@ export default function Application_Modal({
     } : any ) {
     
     const { 
+            id,
+            ticket_sender,
+            ticket_sender_id,
             first_name, 
             last_name, 
             email, 
@@ -34,8 +37,13 @@ export default function Application_Modal({
         application_status != undefined ?
             application_status : "New" )
 
-    const ticket_sender = current_user_data.username
-    const ticket_sender_id = current_user_data.user_id
+    const [ current_ticket_sender ] =  useState(
+        ticket_sender != undefined ?
+            ticket_sender : current_user_data.username )
+
+    const [ current_ticket_sender_id ] = useState(
+        ticket_sender_id != undefined ?
+            ticket_sender_id : current_user_data.user_id )
 
     const db_url = "http://127.0.0.1:8090/api/collections/application_table/records"
 
@@ -45,6 +53,8 @@ export default function Application_Modal({
         const email = current_email
         const job_position = current_job_position
         const application_status = current_application_status
+        const ticket_sender = current_ticket_sender
+        const ticket_sender_id = current_ticket_sender_id
 
         await fetch(db_url, 
             {
@@ -67,9 +77,44 @@ export default function Application_Modal({
         setModalShow(false)
     }
 
+    const update = async() => {
+        const application_status = current_application_status
+
+        await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+                application_status,
+            }),
+        });
+    }
+
     return (
         <>
             <div className="modal_body">
+                {
+                    current_application_status != "New" ?
+                        <>
+                            <label htmlFor="feedback_sender">Feedback Sender: </label><br></br>
+                            <input 
+                                className="feedback_sender"
+                                type="text" 
+                                value={ current_ticket_sender }
+                                readOnly
+                            /><br></br><br></br>
+
+                            <label htmlFor="feedback_sender_id">Feedback Sender ID: </label><br></br>
+                            <input 
+                                className="feedback_sender_id"
+                                type="text" 
+                                value={ current_ticket_sender_id}
+                                readOnly
+                            /><br></br><br></br>
+                        </> 
+                    : null
+                }
                 <label htmlFor="firstName">First Name: </label>
                 <input 
                     className="firstName"

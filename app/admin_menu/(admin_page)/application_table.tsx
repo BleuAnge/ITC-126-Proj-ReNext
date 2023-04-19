@@ -1,34 +1,29 @@
 import { useEffect, useState } from 'react';
 import '../../(utility)/modal.css';
 import '../../(utility)/table.css';
+import Global_Modal from '../../(modals)/modal';
 
 export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
-    const [currentUserData] = useState(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
-    const [applications, setApplication] = useState<any>()
-    const [applicationID, setApplicationID] = useState()
+    const [ ticket_list, setTicketList ] = useState<any>()
+    const [ ticket_data, setTicketData ] = useState<any>([])
+    const ticket_type = "Application"
     const [showModal, setModalShow] = useState(false)
 
-    const { usertype, id} = currentUserData || {}
-
-    const ReturnToAdminMenu = () => {
-        setAdminMenu(true); 
-        setApplyMenu(false);
-    }
+    const baseUrl = 'http://127.0.0.1:8090/api/collections/application_table/records?page=1&perPage=30'
 
     useEffect(() => {
-        async function getApplicationTable() {
-            const res = await fetch('http://127.0.0.1:8090/api/collections/application_table/records?page=1&perPage=30',
+        async function getTicketList() {
+            const res = await fetch(baseUrl ,
             {cache:'no-store'});
             const data = await res.json();
-            setApplication(data?.items);
-            return data?.items as any[];
+            setTicketList(data?.items);
         }
 
-        getApplicationTable(); 
+        getTicketList(); 
     },[])
 
     const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${applicationID}`, {
+        await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${ticket_data.id}`, {
             method: 'Delete',
         })
     }
@@ -51,59 +46,63 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
                             </tr>
                         </thead>
                         {
-                            applications?.map((application: { id: any; }) => { 
-                                return ( <ApplicationList application={application} usertype={usertype} id={id} setApplicationID={setApplicationID} setModalShow={setModalShow} deleteTicket={deleteTicket}/>
-                                    
+                            ticket_list?.map((ticket: { id: any; }) => { 
+                                return ( 
+                                    <ApplicationList 
+                                        application={ticket} 
+                                        setTicketData={setTicketData} 
+                                        setModalShow={setModalShow} 
+                                        deleteTicket={deleteTicket}/> 
                                 )
                             })
                         }  
                     </table>
                 </div>
-                {
-                    usertype === "ADMIN" ?
-                        <button className='return_button' onClick={ReturnToAdminMenu}>Return to Admin Menu</button>
-                    : null
-                }
+                <button className='return_button' onClick={() => {
+                    setAdminMenu(true)
+                    setApplyMenu(false)
+                    }}>
+                        Return to Admin Menu
+                </button>
             </div>
             {
                 showModal ?
-                    <ApplicationTicket applicationID={applicationID} setModalShow={setModalShow} />
+                    <Global_Modal 
+                        ticket_type = { ticket_type } 
+                        ticket_data={ ticket_data } 
+                        setModalShow={ setModalShow } />
                 : null
             }
         </> 
     )
 }
 
-function ApplicationList({ application, usertype, id, setApplicationID, setModalShow, deleteTicket }: any) {
-    const {sender_id, first_name, last_name, email, application_status, created} = application || {};
+function ApplicationList({ application, setTicketData, setModalShow, deleteTicket }: any) {
+    const { first_name, last_name, email, application_status, created } = application || {};
 
     return (
         <>
-            {
-                usertype === "ADMIN" || sender_id === id ? 
-                    <tbody>
-                        <tr>
-                            <td>{first_name}</td>
-                            <td>{last_name}</td>
-                            <td>{email}</td>
-                            <td>{created}</td>
-                            <td>{application_status}</td>
-                            <td><button className='button_clear' onClick={() => {
-                                    setApplicationID(application.id)
-                                    setModalShow(true)
-                                }}>
-                                    Update
-                                </button></td>
-                            <td><button className='button_clear' onClick={()=>{ 
-                                    setApplicationID(application.id)
-                                    deleteTicket()
-                                }}>
-                                    Delete
-                                </button></td>
-                        </tr>
-                    </tbody>
-                : null
-            }     
+            <tbody>
+                <tr>
+                    <td>{first_name}</td>
+                    <td>{last_name}</td>
+                    <td>{email}</td>
+                    <td>{created}</td>
+                    <td>{application_status}</td>
+                    <td><button className='button_clear' onClick={() => {
+                            setTicketData(application)
+                            setModalShow(true)
+                        }}>
+                            Update
+                        </button></td>
+                    <td><button className='button_clear' onClick={()=>{ 
+                            setTicketData(application)
+                            deleteTicket()
+                        }}>
+                            Delete
+                        </button></td>
+                </tr>
+            </tbody>  
         </>     
     )
 }

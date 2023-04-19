@@ -1,7 +1,10 @@
-export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, setApplyMenu, tickets}: any){
-    const ShowFeedbackClick = () => {setAdminMenu(false); setFeedbackMenu(true)}
-    const ShowReportClick = () => {setAdminMenu(false); setReportMenu(true)}
-    const ShowApplyClick = () => {setAdminMenu(false); setApplyMenu(true)}
+export default function MainMenu({
+    setAdminMenu, 
+    setFeedbackMenu, 
+    setReportMenu, 
+    setApplyMenu, 
+    tickets
+    } : any){
 
     return (
         <div className='admin-main-body'>
@@ -13,14 +16,29 @@ export default function MainMenu({setAdminMenu, setFeedbackMenu, setReportMenu, 
                 </div>
 
                 <div className='admin-menu-container'>
-                    <button id='admin-feedback-section' className='admin-section-card' onClick={ShowFeedbackClick}>
-                        <h1 className='admin-menu-link'>Customer Feedback Tickets</h1>
+                    <button id='admin-feedback-section' className='admin-section-card' onClick={() => {
+                        setAdminMenu(false) 
+                        setFeedbackMenu(true)
+                        }}>
+                        <h1 className='admin-menu-link'>
+                            Customer Feedback Tickets
+                        </h1>
                     </button>
-                    <button id='admin-report-section' className='admin-section-card' onClick={ShowReportClick}>
-                        <h1 className='admin-menu-link'>Customer Report Tickets</h1>
+                    <button id='admin-report-section' className='admin-section-card' onClick={() => {
+                        setAdminMenu(false) 
+                        setReportMenu(true)
+                        }}>
+                        <h1 className='admin-menu-link'>
+                            Customer Report Tickets
+                        </h1>
                     </button>
-                    <button id='admin-apply-section' className='admin-section-card' onClick={ShowApplyClick}>
-                        <h1 className='admin-menu-link'>Application Tickets</h1>
+                    <button id='admin-apply-section' className='admin-section-card' onClick={() => {
+                        setAdminMenu(false) 
+                        setApplyMenu(true)
+                        }}>
+                        <h1 className='admin-menu-link'>
+                            Application Tickets
+                        </h1>
                     </button>
                 </div>
             </div>
