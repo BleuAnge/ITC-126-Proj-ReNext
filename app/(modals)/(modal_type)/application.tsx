@@ -34,7 +34,8 @@ export default function Application_Modal({
             job_position : "Product Manager" )
 
     const [ current_application_status, setApplicationStatus ] = useState(
-        application_status != undefined ?
+        application_status == "New" ? "Seen"
+        : application_status != undefined ?
             application_status : "New" )
 
     const [ current_ticket_sender ] =  useState(
@@ -89,6 +90,8 @@ export default function Application_Modal({
                 application_status,
             }),
         });
+
+        location.reload()
     }
 
     return (
@@ -122,7 +125,9 @@ export default function Application_Modal({
                     value={first_name}
                     onChange={(e) => { 
                         setFirstName(e.target.value)
-                    }}/><br></br><br></br>
+                    }}
+                    readOnly={ current_application_status != "New" ? true : false}
+                    /><br></br><br></br>
 
                 <label htmlFor="lastName">Last Name: </label>
                 <input 
@@ -131,7 +136,9 @@ export default function Application_Modal({
                     value={last_name}
                     onChange={(e) => {
                         setLastName(e.target.value)
-                    }}/><br></br><br></br>
+                    }}
+                    readOnly={ current_application_status != "New" ? true : false}
+                    /><br></br><br></br>
 
                 <label htmlFor="email">Email: </label>
                 <input 
@@ -140,29 +147,75 @@ export default function Application_Modal({
                     value={current_email}
                     onChange={(e) => {
                         setEmail(e.target.value)
-                    }}/><br></br><br></br>
+                    }}
+                    readOnly={ current_application_status != "New" ? true : false}
+                    /><br></br><br></br>
 
                 <label htmlFor="jobPosition">Job Position: </label>
                 <select
+                    disabled={ current_application_status != "New" ? true : false}
                     className="jobPosition"
                     value={current_job_position}
                     onChange={(e)=> {
                         setJobPosition(e.target.value)
-                        }}>
+                        }}
+                    >
                     <option value="product_manager">Product Manager</option>
                     <option value="delivery_driver">Delivery Driver</option>
                     <option value="customer_support">Customer Support</option>
                     <option value="it_specialist">IT Specialist</option>  
                 </select><br></br><br></br>
+                {
+                    current_user_data.usertype === "HR" ?
+                        current_application_status === "Seen" ?
+                            <>
+                                <button onClick={() => {
+                                    setApplicationStatus("Denied")
+                                    }}>
+                                        Denied
+                                </button>
+
+                                <button onClick={() => {
+                                    setApplicationStatus("For Interview")
+                                    }}>
+                                        For Interview
+                                </button>
+                            </>
+                        :  application_status === "For Interview" && 
+                            current_application_status === "For Interview" ?
+                                <>
+                                    <button onClick={() => {
+                                        setApplicationStatus("Denied")
+                                        }}>
+                                            Denied
+                                    </button>
+
+                                    <button onClick={() => {
+                                        setApplicationStatus("Accepted")
+                                        }}>
+                                            Accepted
+                                    </button>
+                                </>
+                        :null
+                    : null
+                }
             </div>
             <div className="modal_footer">
                 <button id="cancel_button" onClick={() => {
                     setModalShow(false)
+                    setApplicationStatus("Seen")
+                    current_application_status != "New" ?
+                        update()
+                    : null
                     }}>
                         Cancel
                 </button>
                 <button onClick={() => { 
-                    create()
+                    current_application_status == "New" ?
+                        create()
+                    : current_application_status != "New" ?
+                        update()
+                    : null
                     }}>
                         Save
                 </button>

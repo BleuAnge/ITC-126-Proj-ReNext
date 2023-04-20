@@ -148,6 +148,8 @@ export default function Report_Modal({
         location.reload()
     }
 
+    console.log(current_report_status)
+
     return (
        <>
             <div className="modal_body">
@@ -198,7 +200,7 @@ export default function Report_Modal({
                         <>
                             <label htmlFor="assign_to">Assign Ticket To:</label><br></br>
                             <select
-                                disabled = { report_status == "Processing"  ? true : false } 
+                                disabled = { current_report_status != "Seen"  ? true : false } 
                                 className = "reportType"
                                 value = { current_assigned_to_id }
                                 onChange={(e)=>{ 
@@ -217,10 +219,20 @@ export default function Report_Modal({
                         </>
                     : null
                 }
+
+                {
+                    current_user_data.usertype === "PARTNER" || 
+                    current_user_data.usertype === "IT" && 
+                    current_report_status != "Waiting For Approval" ?
+                        <button onClick={() => setReportStatus("Waiting For Approval")}>Return Ticket</button>
+                    : null
+                }
                 
                 {
-                    current_report_status === "Waiting for Approval" && report_status != "Approved"? 
-                        <button onClick={() => setReportStatus("Approved")}>Approve Ticket</button>
+                    current_user_data.usertype === "ADMIN" ?
+                        current_report_status === "Waiting For Approval" ? 
+                            <button onClick={() => setReportStatus("Approved")}>Approve Ticket</button>
+                        : null
                     : null
                 }
             </div>

@@ -7,6 +7,7 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
     const [ ticket_list, setTicketList ] = useState<any>()
     const [ ticket_data, setTicketData ] = useState<any>([])
     const ticket_type = "Report"
+    const [ forDeletion, setForDeletion ] = useState(false)
     const [ showModal, setModalShow ] = useState(false)
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/report_table/records?page=1&perPage=30'
@@ -21,12 +22,6 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
 
         getTicketList(); 
     },[])
-
-    const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${ticket_data.id}`, {
-            method: 'Delete',
-        })
-    }
 
     return (
         <>
@@ -48,11 +43,25 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                         {
                             ticket_list?.map((ticket: { id: any; }) => { 
                                 return (
-                                    <ReportList 
-                                        report={ticket} 
-                                        setTicketData={setTicketData} 
-                                        setModalShow={setModalShow} 
-                                        deleteTicket={deleteTicket}/>
+                                    <tbody>
+                                        <tr>
+                                            <ReportList 
+                                                report={ticket} />
+                                            <td><button className='button_clear' onClick={() => {
+                                                setTicketData(ticket)
+                                                setModalShow(true)
+                                                }}>
+                                                    Update
+                                                </button></td>
+                                            <td><button className='button_clear' onClick={() => {
+                                                setTicketData(ticket)
+                                                setForDeletion(true)
+                                                setModalShow(true)
+                                                }}>
+                                                    Delete
+                                            </button></td>
+                                        </tr>
+                                    </tbody> 
                                 )
                             })
                         } 
@@ -60,7 +69,9 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                 </div>   
                 <button className='return_button' onClick={() => {
                     setAdminMenu(true)
-                    setReportMenu(false)}}>
+                    setReportMenu(false)
+                    location.reload()
+                    }}>
                         Return to Admin Menu
                 </button>
             </div>
@@ -69,39 +80,24 @@ export default function ReportTable({setAdminMenu, setReportMenu}: any) {
                     <Global_Modal 
                         ticket_type = { ticket_type }
                         ticket_data = { ticket_data } 
-                        setModalShow = { setModalShow } />
+                        setModalShow = { setModalShow } 
+                        forDeletion = { forDeletion } />
                 : null
             }
         </>
     )
 }
 
-function ReportList({ report, setTicketData, setModalShow, deleteTicket }: any) {
+function ReportList({ report }: any) {
     const {ticket_sender,  report_note, report_type, report_status, created} = report || {};
 
     return (
         <>
-            <tbody>
-                <tr>
-                    <td>{ticket_sender}</td>
-                    <td>{report_note}</td>
-                    <td>{report_type}</td>
-                    <td>{created}</td>
-                    <td>{report_status}</td> 
-                    <td><button className='button_clear' onClick={() => {
-                        setTicketData(report)
-                        setModalShow(true)
-                    }}>
-                        Update
-                    </button></td>
-                    <td><button className='button_clear' onClick={() => {
-                        setTicketData(report)
-                        deleteTicket()
-                    }}>
-                        Delete
-                    </button></td>
-                </tr>
-            </tbody>    
+            <td>{ticket_sender}</td>
+            <td>{report_note}</td>
+            <td>{report_type}</td>
+            <td>{created}</td>
+            <td>{report_status}</td>          
         </>     
     )
 }

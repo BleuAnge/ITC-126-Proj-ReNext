@@ -1,39 +1,33 @@
 'use client';
 
-import { useState, useEffect } from "react"
+import { useEffect, useState, } from 'react';
 import '../(utility)/modal.css';
 import '../(utility)/table.css';
+import Global_Modal from '../(modals)/modal';
 
-export default function EnterprisePage(){
-    const [reports, setReport] = useState<any>()
-    const [showModal, setModalShow] = useState(false)
-    const [reportID, setReportID] = useState() 
-    const [currentUserData, setCurrentUserData] = useState<any>(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || ''))
-    const [id, setID] = useState()
+export default function ReportTable() {
+    const [ ticket_list, setTicketList ] = useState<any>()
+    const [ ticket_data, setTicketData ] = useState<any>([])
+    const ticket_type = "Report"
+    const [ showModal, setModalShow ] = useState(false)
+    const [ current_user_data ] = useState<any>(
+        JSON.parse(localStorage.getItem("CURRENT_USER_DATA") || " " ))
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/report_table/records?page=1&perPage=30'
 
     useEffect(() => {
-        setCurrentUserData(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || ''))
-
-        async function getReportTable() {
+        async function getTicketList() {
             const res = await fetch(baseUrl,
             {cache:'no-store'});
             const data = await res.json();
-            setReport(data?.items);
+            setTicketList(data?.items);
         }
 
-        getReportTable(); 
+        getTicketList(); 
     },[])
 
-    useEffect(() => {
-        const { id } = currentUserData || {}
-        setID(id)
-        console.log(id)
-    }, [currentUserData])
-
     const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
+        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${ticket_data.id}`, {
             method: 'Delete',
         })
     }
@@ -56,153 +50,62 @@ export default function EnterprisePage(){
                             </tr>
                         </thead>
                         {
-                            reports?.map((report: { id: any; }) => { return (
-                                <>
+                            ticket_list?.map((ticket: { id: any; }) => { 
+                                return (
                                     <ReportList 
-                                        report={report} 
-                                        id = { id }
-                                        setReportID={setReportID} 
+                                        report={ticket} 
+                                        setTicketData={setTicketData} 
                                         setModalShow={setModalShow} 
-                                        deleteTicket={deleteTicket}/>
-                                </>
-                            )})
+                                        deleteTicket={deleteTicket}
+                                        current_user_data = { current_user_data }/>
+                                )
+                            })
                         } 
                     </table>
                 </div>   
             </div>
             {
                 showModal ?
-                    <ReportTicket reportID={reportID} setModalShow={setModalShow} />
+                    <Global_Modal 
+                        ticket_type = { ticket_type }
+                        ticket_data = { ticket_data } 
+                        setModalShow = { setModalShow } />
                 : null
             }
         </>
     )
 }
 
-function ReportList({ report, id, setReportID, setModalShow, deleteTicket }: any) {
-    const {sender, report_note, report_type, report_status, assigned_to_ID, created} = report || {};
-    console.log(id)
+function ReportList({ report, setTicketData, setModalShow, deleteTicket, current_user_data }: any) {
+    const {ticket_sender,  report_note, report_type, report_status, assigned_to_id, created} = report || {};
+
     return (
         <>
             {
-                assigned_to_ID === id ? 
+                current_user_data.user_id === assigned_to_id ? 
                     <tbody>
                         <tr>
-                            <td>{sender}</td>
+                            <td>{ticket_sender}</td>
                             <td>{report_note}</td>
                             <td>{report_type}</td>
                             <td>{created}</td>
-                            <td>{report_status}</td>     
+                            <td>{report_status}</td> 
                             <td><button className='button_clear' onClick={() => {
-                                setReportID(report.id)
+                                setTicketData(report)
                                 setModalShow(true)
                             }}>
                                 Update
                             </button></td>
                             <td><button className='button_clear' onClick={() => {
-                                setReportID(report.id)
+                                setTicketData(report)
                                 deleteTicket()
                             }}>
                                 Delete
                             </button></td>
                         </tr>
-                    </tbody>
+                    </tbody>                    
                 : null
             }
         </>     
     )
-}
-
-function ReportTicket({ reportID, setModalShow }: any) {
-    const [reportData, setReportData] = useState<any>()
-    const [report_status] = useState("Waiting for Approval")
-    const [isDone, setIsDone] = useState(false)
-    
-    useEffect(() => {
-        async function getReportTable() {
-            const res = await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`)
-            const data = await res.json()
-            setReportData(data)
-        }
-
-        getReportTable(); 
-    },[])
-
-    const {sender, order_id, report_note, report_type} = reportData || {}
-
-    const update = async() => {
-        await fetch(`http://127.0.0.1:8090/api/collections/report_table/records/${reportID}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-            },
-            body: JSON.stringify({
-                report_status,
-            }),
-        });
-    }
-
-    return (
-        <div className="modal_background">
-            <div className="modal_container">
-                <div className="modal_header">
-                    <h1>Report Ticket</h1>
-                    <button onClick={() => {
-                        setModalShow(false)
-                        update()
-                    }}> 
-                        X 
-                    </button>
-                </div>
-                <div className="modal_body">
-                <label htmlFor="reportSender">Report Sender: </label><br></br>
-                    <input 
-                        className="reportSender"
-                        type="text" 
-                        value={sender}
-                        readOnly
-                    /><br></br><br></br>
-                    <label htmlFor="reportType">Report Type:</label><br></br>
-                    <input
-                        className="reportType"
-                        type="text" 
-                        value={report_type}
-                        readOnly 
-                    /><br></br><br></br>
-                    <label htmlFor="orderID">Order ID: </label><br></br>
-                    <input 
-                        className="orderID"
-                        type="text" 
-                        value={order_id}
-                        readOnly
-                    /><br></br><br></br>
-                    <label htmlFor="reportNote">Report Note: </label><br></br>
-                    <textarea
-                        className="reportNote"
-                        value={report_note}
-                        readOnly
-                    /><br></br>
-                    <button 
-                        disabled={isDone ? true : false}
-                        onClick={() => setIsDone(true)}>
-                            Finish Report
-                    </button>
-                </div>
-                <div className="modal_footer">
-                    <button id="cancel_button" onClick={() => {
-                        setModalShow(false)
-                        update()
-                    }}>
-                        Cancel
-                    </button>
-                    <button onClick={() => {
-                        setModalShow(false)
-                        update()
-                    }}>
-                        Save
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
+}           

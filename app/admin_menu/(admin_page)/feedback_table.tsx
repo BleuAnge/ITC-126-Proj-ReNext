@@ -7,7 +7,8 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
     const [ ticket_list, setTicketList ] = useState<any>()
     const [ ticket_data, setTicketData ] = useState<any>([])
     const ticket_type = "Feedback"
-    const [ showModal, setModalShow ] = useState(false)
+    const [ forDeletion, setForDeletion ] = useState(false)
+    const [ showModal, setModalShow ] = useState<any>(false)
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/feedback_table/records?page=1&perPage=30'
 
@@ -21,12 +22,6 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
 
         getTicketList(); 
     },[])
-
-    const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/feedback_table/records/${ticket_data.id}`, {
-            method: 'Delete',
-        })
-    }
 
     return (
         <>
@@ -59,7 +54,8 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                                                 </button></td>
                                             <td><button className='button_clear' onClick={()=>{ 
                                                     setTicketData(ticket)
-                                                    deleteTicket()
+                                                    setForDeletion(true)
+                                                    setModalShow(true)
                                                 }}>
                                                     Delete
                                                 </button></td> 
@@ -73,6 +69,7 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
                 <button className='return_button' onClick={() => {
                     setAdminMenu(true)
                     setFeedbackMenu(false)
+                    location.reload()
                     }}>
                         Return to Admin Menu
                 </button>
@@ -80,6 +77,7 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
             {
                 showModal ?
                     <Global_Modal 
+                        forDeletion = { forDeletion }
                         ticket_type = { ticket_type } 
                         ticket_data={ ticket_data } 
                         setModalShow={ setModalShow } />

@@ -3,34 +3,29 @@
 import { useEffect, useState } from 'react';
 import '../(utility)/modal.css';
 import '../(utility)/table.css';
+import Global_Modal from '../(modals)/modal';
 
-export default function ApplicationTable() {
-    const [currentUserData, setCurrentUserData] = useState(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
-    const [applications, setApplication] = useState<any>()
-    const [applicationID, setApplicationID] = useState()
+export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
+    const [ ticket_list, setTicketList ] = useState<any>()
+    const [ ticket_data, setTicketData ] = useState<any>([])
+    const ticket_type = "Application"
     const [showModal, setModalShow] = useState(false)
-    const [id, setID] = useState()
+
+    const baseUrl = 'http://127.0.0.1:8090/api/collections/application_table/records?page=1&perPage=30'
 
     useEffect(() => {
-        async function getApplicationTable() {
-            const res = await fetch('http://127.0.0.1:8090/api/collections/application_table/records?page=1&perPage=30',
+        async function getTicketList() {
+            const res = await fetch(baseUrl ,
             {cache:'no-store'});
             const data = await res.json();
-            setApplication(data?.items);
-            return data?.items as any[];
+            setTicketList(data?.items);
         }
 
-        getApplicationTable(); 
+        getTicketList(); 
     },[])
 
-    useEffect(() => {
-        const { id } = currentUserData || {}
-        setID(id)
-        console.log(id)
-    }, [currentUserData])
-
     const deleteTicket = async () => {
-        await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${applicationID}`, {
+        await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${ticket_data.id}`, {
             method: 'Delete',
         })
     }
@@ -53,67 +48,71 @@ export default function ApplicationTable() {
                             </tr>
                         </thead>
                         {
-                            applications?.map((application: { id: any; }) => { return (
-                                <ApplicationList 
-                                    application={ application } 
-                                    currentUserData={ currentUserData }  
-                                    setApplicationID={ setApplicationID }
-                                    setModalShow={setModalShow}
-                                    deleteTicket={deleteTicket}/>
-                            )})
+                            ticket_list?.map((ticket: { id: any; }) => { 
+                                return ( 
+                                    <ApplicationList 
+                                        application={ticket} 
+                                        setTicketData={setTicketData} 
+                                        setModalShow={setModalShow} 
+                                        deleteTicket={deleteTicket}/> 
+                                )
+                            })
                         }  
                     </table>
                 </div>
+                <button className='return_button' onClick={() => {
+                    setAdminMenu(true)
+                    setApplyMenu(false)
+                    location.reload()
+                    }}>
+                        Return to Admin Menu
+                </button>
             </div>
             {
                 showModal ?
-                    <ApplicationTicket applicationID={applicationID} setModalShow={setModalShow} />
+                    <Global_Modal 
+                        ticket_type = { ticket_type } 
+                        ticket_data={ ticket_data } 
+                        setModalShow={ setModalShow } />
                 : null
             }
         </> 
     )
 }
 
-function ApplicationList({ application, currentUserData, setApplicationID, setModalShow, deleteTicket }: any) {
-    const {assigned_to_ID, first_name, last_name, email, application_status, created} = application || {};
-    const { id } = currentUserData || {}
+function ApplicationList({ application, setTicketData, setModalShow, deleteTicket }: any) {
+    const { first_name, last_name, email, application_status, created } = application || {};
 
     return (
         <>
-            {
-                assigned_to_ID === id ?
-                    <tbody>
-                        <tr>
-                            <td>{first_name}</td>
-                            <td>{last_name}</td>
-                            <td>{email}</td>
-                            <td>{created}</td>
-                            <td>{application_status}</td>
-                            <td>
-                                <button className='button_clear' onClick={() => {
-                                setApplicationID(application.id)
-                                setModalShow(true)}}>
-                                    Update
-                                </button>
-                            </td>
-                            <td>
-                                <button className='button_clear' onClick={()=>{ 
-                                setApplicationID(application.id)
-                                deleteTicket() }}>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                : null
-            }
+            <tbody>
+                <tr>
+                    <td>{first_name}</td>
+                    <td>{last_name}</td>
+                    <td>{email}</td>
+                    <td>{created}</td>
+                    <td>{application_status}</td>
+                    <td><button className='button_clear' onClick={() => {
+                            setTicketData(application)
+                            setModalShow(true)
+                        }}>
+                            Update
+                        </button></td>
+                    <td><button className='button_clear' onClick={()=>{ 
+                            setTicketData(application)
+                            deleteTicket()
+                        }}>
+                            Delete
+                        </button></td>
+                </tr>
+            </tbody>  
         </>     
     )
 }
 
 function ApplicationTicket({ applicationID, setModalShow }: any) {
     const [applicationData, setApplicationData] = useState<any>()
-    const [application_status] = useState("Seen")
+    const [application_status, setApplicationStatus] = useState("Seen")
 
     useEffect(() => {
         async function getApplicationTable() {
@@ -125,7 +124,7 @@ function ApplicationTicket({ applicationID, setModalShow }: any) {
         getApplicationTable(); 
     },[])
     
-    const { first_name, last_name, email, job_position } = applicationData || {}
+    const {first_name, last_name, email, job_position} = applicationData || {}
 
     const update = async() => {
         await fetch(`http://127.0.0.1:8090/api/collections/application_table/records/${applicationID}`, {

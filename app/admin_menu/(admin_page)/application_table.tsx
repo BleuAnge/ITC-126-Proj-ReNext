@@ -7,6 +7,7 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
     const [ ticket_list, setTicketList ] = useState<any>()
     const [ ticket_data, setTicketData ] = useState<any>([])
     const ticket_type = "Application"
+    const [ forDeletion, setForDeletion ] = useState(false)
     const [showModal, setModalShow] = useState(false)
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/application_table/records?page=1&perPage=30'
@@ -48,11 +49,25 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
                         {
                             ticket_list?.map((ticket: { id: any; }) => { 
                                 return ( 
-                                    <ApplicationList 
-                                        application={ticket} 
-                                        setTicketData={setTicketData} 
-                                        setModalShow={setModalShow} 
-                                        deleteTicket={deleteTicket}/> 
+                                    <tbody>
+                                        <tr>
+                                            <ApplicationList 
+                                                application={ticket} /> 
+                                                    <td><button className='button_clear' onClick={() => {
+                                                        setTicketData(ticket)
+                                                        setModalShow(true)
+                                                    }}>
+                                                        Update
+                                                        </button></td>
+                                                    <td><button className='button_clear' onClick={()=>{ 
+                                                            setTicketData(ticket)
+                                                            setForDeletion(true)
+                                                            setModalShow(true)
+                                                        }}>
+                                                            Delete
+                                                        </button></td> 
+                                        </tr>
+                                    </tbody> 
                                 )
                             })
                         }  
@@ -61,6 +76,7 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
                 <button className='return_button' onClick={() => {
                     setAdminMenu(true)
                     setApplyMenu(false)
+                    location.reload()
                     }}>
                         Return to Admin Menu
                 </button>
@@ -68,6 +84,7 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
             {
                 showModal ?
                     <Global_Modal 
+                        forDeletion = { forDeletion }
                         ticket_type = { ticket_type } 
                         ticket_data={ ticket_data } 
                         setModalShow={ setModalShow } />
@@ -77,32 +94,16 @@ export default function ApplicationTable({setAdminMenu, setApplyMenu}: any) {
     )
 }
 
-function ApplicationList({ application, setTicketData, setModalShow, deleteTicket }: any) {
+function ApplicationList({ application }: any) {
     const { first_name, last_name, email, application_status, created } = application || {};
 
     return (
         <>
-            <tbody>
-                <tr>
-                    <td>{first_name}</td>
-                    <td>{last_name}</td>
-                    <td>{email}</td>
-                    <td>{created}</td>
-                    <td>{application_status}</td>
-                    <td><button className='button_clear' onClick={() => {
-                            setTicketData(application)
-                            setModalShow(true)
-                        }}>
-                            Update
-                        </button></td>
-                    <td><button className='button_clear' onClick={()=>{ 
-                            setTicketData(application)
-                            deleteTicket()
-                        }}>
-                            Delete
-                        </button></td>
-                </tr>
-            </tbody>  
+            <td>{first_name}</td>
+            <td>{last_name}</td>
+            <td>{email}</td>
+            <td>{created}</td>
+            <td>{application_status}</td>        
         </>     
     )
 }

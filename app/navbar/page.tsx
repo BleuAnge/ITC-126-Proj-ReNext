@@ -11,6 +11,10 @@ export default function Navbar({setCurrentUserData}: any){
     useEffect(() => {
         window.localStorage.setItem('CURRENT_USER_DATA', JSON.stringify(currentUser))
         setCurrentUserData(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
+        localStorage.setItem('CURRENT_ADMIN_STATE', JSON.stringify(true))
+        localStorage.setItem('CURRENT_FEEDBACK_STATE', JSON.stringify(false))
+        localStorage.setItem('CURRENT_REPORT_STATE', JSON.stringify(false))
+        localStorage.setItem('CURRENT_APPLY_STATE', JSON.stringify(false))
     }, [currentUser])
 
     const baseUrl = 'http://127.0.0.1:8090/api/collections/account_table/records?page=1&perPage=30'

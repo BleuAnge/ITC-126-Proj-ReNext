@@ -79,6 +79,7 @@ export default function Feedback_Modal({
         })
 
         setModalShow(false)
+        location.reload()
     }
 
     return (
@@ -146,7 +147,7 @@ export default function Feedback_Modal({
                 <button onClick = {() => { 
                     current_feedback_status === "New" ?
                         createTicket()
-                    : current_feedback_status === "Seen" ?
+                    : feedback_status === "Seen" ?
                         update()
                     : null
                     }}>
