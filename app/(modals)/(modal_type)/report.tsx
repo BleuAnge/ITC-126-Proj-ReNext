@@ -24,7 +24,7 @@ export default function Report_Modal({
 
     const [ current_report_type , setReportType ] = useState(
         report_type != undefined ?
-            report_type : " " )  
+            report_type : "Manage Reciept" )  
     
     const [ current_report_note , setReportNote ] = useState(
         report_note != undefined ?

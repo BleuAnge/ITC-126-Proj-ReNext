@@ -19,21 +19,6 @@ export default function AdminPage() {
         localStorage.setItem('CURRENT_REPORT_STATE', JSON.stringify( showReportMenu ))
         localStorage.setItem('CURRENT_APPLY_STATE', JSON.stringify( showApplyMenu ))
     }, [showAdminMenu, showFeedbackMenu, showReportMenu, showApplyMenu])
-
-    const [tickets, setTickets] = useState();
-
-    //To be Refactored
-    useEffect(() => {
-        async function getFeedbackTable() {
-            const res = await fetch('http://127.0.0.1:8090/api/collections/feedback_table/records?page=1&perPage=30',
-            {cache:'no-store'});
-            const data = await res.json();
-            setTickets(data?.items);
-            return data?.items as any[];
-        }
-
-        getFeedbackTable(); 
-    },[])
     
     return (
         <>
@@ -43,8 +28,7 @@ export default function AdminPage() {
                         setAdminMenu={setAdminMenu} 
                         setFeedbackMenu={setFeedbackMenu} 
                         setReportMenu={setReportMenu} 
-                        setApplyMenu={setApplyMenu}
-                        tickets={tickets}/>
+                        setApplyMenu={setApplyMenu} />
                 : null
             }
 
