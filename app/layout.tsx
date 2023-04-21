@@ -15,12 +15,12 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Navbar setCurrentUserData={setCurrentUserData}></Navbar>
-        <main>
+        <Navbar className='nav' setCurrentUserData={setCurrentUserData}></Navbar>
+        <main className='main'>
           {children}
         </main>
         <div id='root'></div>
-        <Footer currentUserData={currentUserData}></Footer>
+        <Footer className='footer' currentUserData={currentUserData}></Footer>
       </body>
     </html>
   );

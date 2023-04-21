@@ -10,11 +10,13 @@ export default function FeedbackTable({setAdminMenu, setFeedbackMenu}: any) {
     const [ forDeletion, setForDeletion ] = useState(false)
     const [ showModal, setModalShow ] = useState<any>(false)
 
+    console.log(ticket_list)
+
     const baseUrl = 'http://127.0.0.1:8090/api/collections/feedback_table/records?page=1&perPage=30'
 
     useEffect(() => {
         async function getTicketList() {
-            const res = await fetch(baseUrl,
+        const res = await fetch(baseUrl,
             {cache:'no-store'});
             const data = await res.json();
             setTicketList(data?.items);

@@ -1,13 +1,13 @@
 'use client';
 
-import styles from './navbar.module.css';
-import { useEffect,useState, useRef } from 'react';
+import './navbar.css';
+import { useEffect,useState } from 'react';
 import NavDropDown from './nav_dropdown';
 
 export default function Navbar({setCurrentUserData}: any){
     const [accounts, setAccounts] = useState<any>()
     const [currentUser, setCurrentUser] = useState<any>(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}') || {username: "John Doe", usertype: "HIDDEN", user_id: "this nuts"})
-    const [ ticket_list, setTicketList ] = useState<any>()
+    const [ ticket_list ] = useState<any>()
     useEffect(() => {
         window.localStorage.setItem('CURRENT_USER_DATA', JSON.stringify(currentUser))
         setCurrentUserData(JSON.parse(localStorage.getItem('CURRENT_USER_DATA') || '{}'))
@@ -31,12 +31,12 @@ export default function Navbar({setCurrentUserData}: any){
     },[])
 
     return (
-        <nav className={styles.navbar}>
-            <ul className={styles.navbar_nav} >
+        <nav className='navbar'>
+            <ul className='navbar_buttons' >
                 {
                     currentUser.usertype === "USER" ?
                         ticket_list != undefined ?
-                            <button className={styles.title_btn}>New Message</button>
+                            <button className='title_btn'>New Message</button>
                         : null
                     : null
                 }

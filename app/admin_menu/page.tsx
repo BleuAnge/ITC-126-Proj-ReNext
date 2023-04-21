@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import MainMenu from './(admin_page)/main_menu';
 import FeedbackTable from './(admin_page)/feedback_table';
 import ReportTable from './(admin_page)/report_table';

@@ -4,21 +4,23 @@ body {
 }
 
 .menu {
-    position: absolute;
-    width: 100dvw;
-    height: 80dvh;
+    position: relative;
+    width: inherit;
+    height: inherit;
     display: flex;
+    position: relative;
     align-items: center;
     overflow: hidden;
 }
 
 .menu_item {
+    flex-grow: 1;
     color: white;
-    font-size: clamp(3rem, 8vh, 8rem);
+    font-size: clamp(10px, 8vh, 8rem);
     font-family: 'bahnschrift';
-    
-    display: block;
+    display: flex;
     text-decoration: none;
+    margin-block: clamp(0.25rem, 5vh, 2rem) 0rem;
     padding: clamp(0.25rem, 0.5vw, 1rem) 0rem;
     transition: opacity 400ms ease;
 }
@@ -33,14 +35,14 @@ body {
 }
 
 .menu_items {
-    margin-left: clamp(4rem, 20vw, 48rem);
+    margin-left: clamp(0.5rem, 20vw, 48rem);
     position: relative;
     z-index: 2;
 }
 
-#bg_pattern {
-    height: 100vh;
-    width: 100vw;
+#background_pattern {
+    height: inherit;
+    width: inherit;
 
     background-image: radial-gradient(
         rgba(255, 255, 255, 0.1) 9%,
@@ -59,19 +61,19 @@ body {
     background-position 200ms ease;
 }
 
-.menu_items:hover ~ #bg_pattern {
+.menu_items:hover ~ #background_pattern {
     background-size: 11vmin 11vmin;
     opacity: 0.5;
 }
 
-#bg_image {
-    height: 100%;
-    width: 50%;
+#background_image {
+    height: inherit;
+    width: inherit;
     
     background: url("./assets/tako-eats.png") no-repeat center center;
 
     position: absolute;
-    left: 50%;
+    left: 25%;
     top: 0%;
     z-index: 0;
 
@@ -84,7 +86,7 @@ body {
     background-position 800ms ease;  
 }
 
-.menu_items:hover ~ #bg_image {
+.menu_items:hover ~ #background_image {
     background-size: 15vmax;
     opacity: 1;
 }

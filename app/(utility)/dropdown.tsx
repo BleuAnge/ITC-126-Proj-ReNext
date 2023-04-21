@@ -1,9 +1,9 @@
-import styles from '../navbar/navbar.module.css';
+import '../navbar/navbar.css';
 import Link from 'next/link';
 
 export default function DropDown({ submenus, setOpenDropDown, setCurrentUser}: any) {
     return (
-        <div className={styles.dropdown}>
+        <div className='dropdown'>
             {
                 submenus?.map((account: { id: any; }) => { return (
                     <DropDownItem account={account} setOpenDropDown={setOpenDropDown} setCurrentUser={setCurrentUser}/>
@@ -23,7 +23,7 @@ function DropDownItem({account, setOpenDropDown, setCurrentUser} : any) {
                     "/" 
 
     return ( 
-        <Link href={pageUrl} className={styles.menu_item} onClick={() => {
+        <Link href={pageUrl} className='dropdown_item' onClick={() => {
             setOpenDropDown(false)
             setCurrentUser({username: username, usertype: usertype, user_id: id})
             }}>

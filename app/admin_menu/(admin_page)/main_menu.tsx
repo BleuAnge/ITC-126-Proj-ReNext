@@ -66,9 +66,7 @@ export default function MainMenu({
             </div>
 
             {/*draw a admin inanis for this part*/}
-            <div className='admin-image-section'>
-                
-            </div>
+            <div id="bg_image"></div> 
             {
                 showModal ?
                     <Global_Modal 
@@ -77,7 +75,10 @@ export default function MainMenu({
                         setModalShow={ setModalShow } />
                 : null
             }
+
+           
         </div>
+        
     )
 }
 

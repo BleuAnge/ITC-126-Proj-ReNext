@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import DropDown from '../(utility)/dropdown';
-import styles from './navbar.module.css';
+import './navbar.css';
 
 export default function NavDropDown({accounts, setCurrentUser}: any) {
     const [openDropDown, setOpenDropDown] = useState(false)
 
     return(
         <>
-            <button className={styles.title_btn} onClick={() => {setOpenDropDown(!openDropDown)}}>
+            <button className='account_button' onClick={() => {setOpenDropDown(!openDropDown)}}>
                 Accounts
             </button>
 
